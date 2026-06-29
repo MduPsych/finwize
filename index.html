@@ -751,8 +751,66 @@
         function addBudget(e) { e.preventDefault(); budgets.push({ id: Date.now(), category: document.getElementById('budgetCategory').value, limit: parseFloat(document.getElementById('budgetLimit').value) }); localStorage.setItem('budgets', JSON.stringify(budgets)); closeModal('addBudgetModal'); document.querySelector('#addBudgetModal form').reset(); renderAll(); }
         function deleteBudget(id) { if (confirm('Delete?')) { budgets = budgets.filter(b => b.id !== id); localStorage.setItem('budgets', JSON.stringify(budgets)); renderAll(); } }
 
-        function addTransaction(e) { e.preventDefault(); const type = document.getElementById('transType').value; const acctId = document.getElementById('transAccount').value; const amt = parseFloat(document.getElementById('transAmount').value); transactions.push({ date: document.getElementById('transDate').value, description: document.getElementById('transDesc').value, type: type, account: acctId, amount: amt }); if (type === 'debt_payment') { const did = parseInt(acctId.split('_')[1]); const d = debts.find(x => x.id === did); if (d) d.balance -= amt; localStorage.setItem('debts', JSON.stringify(debts)); } else if (type === 'savings_deposit') { const sid = parseInt(acctId.split('_')[1]); const s = savingsAccounts.find(x => x.id === sid); if (s) s.balance += amt; localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts)); } localStorage.setItem('transactions', JSON.stringify(transactions)); closeModal('addTransactionModal'); document.querySelector('#addTransactionModal form').reset(); document.getElementById('transDate').valueAsDate = new Date(); renderAll(); initChart(); }
-        function deleteTransaction(i) { if (confirm('Delete?')) { transactions.splice(i, 1); localStorage.setItem('transactions', JSON.stringify(transactions)); renderAll(); initChart(); } }
+        function addTransaction(e) { 
+            e.preventDefault(); 
+            const type = document.getElementById('transType').value; 
+            const acctId = document.getElementById('transAccount').value; 
+            const amt = parseFloat(document.getElementById('transAmount').value); 
+            transactions.push({ 
+                date: document.getElementById('transDate').value, 
+                description: document.getElementById('transDesc').value, 
+                type: type, 
+                account: acctId, 
+                amount: amt 
+            }); 
+            
+            // Apply transaction to relevant account
+            if (type === 'debt_payment') { 
+                const did = parseInt(acctId.split('_')[1]); 
+                const d = debts.find(x => x.id === did); 
+                if (d) d.balance -= amt; 
+                localStorage.setItem('debts', JSON.stringify(debts)); 
+            } else if (type === 'savings_deposit') { 
+                const sid = parseInt(acctId.split('_')[1]); 
+                const s = savingsAccounts.find(x => x.id === sid); 
+                if (s) s.balance += amt; 
+                localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts)); 
+            } 
+            
+            localStorage.setItem('transactions', JSON.stringify(transactions)); 
+            closeModal('addTransactionModal'); 
+            document.querySelector('#addTransactionModal form').reset(); 
+            document.getElementById('transDate').valueAsDate = new Date(); 
+            renderAll(); 
+            initChart(); 
+        }
+        
+        function deleteTransaction(i) { 
+            if (confirm('Delete?')) { 
+                const trans = transactions[i];
+                
+                // Reverse ALL transaction impacts
+                if (trans.type === 'debt_payment') {
+                    const did = parseInt(trans.account.split('_')[1]);
+                    const d = debts.find(x => x.id === did);
+                    if (d) d.balance += trans.amount; // Add back to debt
+                    localStorage.setItem('debts', JSON.stringify(debts));
+                } 
+                else if (trans.type === 'savings_deposit') {
+                    const sid = parseInt(trans.account.split('_')[1]);
+                    const s = savingsAccounts.find(x => x.id === sid);
+                    if (s) s.balance -= trans.amount; // Subtract from savings
+                    localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
+                }
+                // Note: Income and Expense transactions don't directly modify accounts,
+                // they are just tracked for reporting, so no reversal needed
+                
+                transactions.splice(i, 1); 
+                localStorage.setItem('transactions', JSON.stringify(transactions)); 
+                renderAll(); 
+                initChart(); 
+            } 
+        }
 
         function getAccountName(type, acctId) { const id = parseInt(acctId.split('_')[1]); if (type === 'debt_payment') return debts.find(d => d.id === id)?.name || 'Unknown'; if (type === 'savings_deposit') return savingsAccounts.find(s => s.id === id)?.name || 'Unknown'; if (type === 'expense') return expenseAccounts.find(e => e.id === id)?.name || 'Unknown'; if (type === 'income') return incomeAccounts.find(i => i.id === id)?.name || 'Unknown'; return 'Unknown'; }
 
