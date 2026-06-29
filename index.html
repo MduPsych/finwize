@@ -98,9 +98,7 @@
             z-index: 50;
         }
 
-        .nav-menu {
-            list-style: none;
-        }
+        .nav-menu { list-style: none; }
 
         .nav-menu-item {
             padding: 14px 24px;
@@ -141,9 +139,7 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .page.active {
-            display: block;
-        }
+        .page.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -230,9 +226,7 @@
             transition: all 0.3s ease;
         }
 
-        .card:hover {
-            border-color: var(--primary);
-        }
+        .card:hover { border-color: var(--primary); }
 
         .card-header {
             display: flex;
@@ -247,6 +241,101 @@
             font-size: 20px;
             font-weight: 800;
             margin: 0;
+        }
+
+        /* MONTH SELECTOR */
+        .month-selector {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .month-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .month-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .month-display {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            min-width: 200px;
+            text-align: center;
+        }
+
+        /* MONTH TO MONTH VIEW */
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .month-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .month-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .month-card-title {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .month-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .month-stat-label {
+            color: var(--text-secondary);
+        }
+
+        .month-stat-value {
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .month-stat-value.negative {
+            color: var(--danger);
+        }
+
+        /* TREND CHART */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 24px;
         }
 
         /* BUTTONS */
@@ -275,10 +364,6 @@
             box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
         .btn-secondary {
             background: var(--surface-hover);
             color: var(--text-primary);
@@ -296,10 +381,6 @@
             padding: 8px 16px;
             font-size: 12px;
             border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-danger:hover {
-            background: rgba(239, 68, 68, 0.2);
         }
 
         /* FORMS */
@@ -327,10 +408,6 @@
             transition: all 0.3s ease;
         }
 
-        input::placeholder {
-            color: var(--text-secondary);
-        }
-
         input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
@@ -339,10 +416,6 @@
         }
 
         /* TABLES */
-        .table-container {
-            overflow-x: auto;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -365,21 +438,11 @@
             border-bottom: 1px solid var(--border);
         }
 
-        tr:hover {
-            background: rgba(16, 185, 129, 0.05);
-        }
+        tr:hover { background: rgba(16, 185, 129, 0.05); }
 
-        .amount {
-            font-weight: 800;
-        }
-
-        .amount.positive {
-            color: var(--success);
-        }
-
-        .amount.negative {
-            color: var(--danger);
-        }
+        .amount { font-weight: 800; }
+        .amount.positive { color: var(--success); }
+        .amount.negative { color: var(--danger); }
 
         /* BADGES */
         .badge {
@@ -391,25 +454,6 @@
             background: rgba(16, 185, 129, 0.1);
             color: var(--primary);
             border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-
-        .badge.warning {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-            border-color: rgba(245, 158, 11, 0.3);
-        }
-
-        .badge.danger {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            border-color: rgba(239, 68, 68, 0.3);
-        }
-
-        /* CHARTS */
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin-bottom: 24px;
         }
 
         /* MODALS */
@@ -427,9 +471,7 @@
             backdrop-filter: blur(4px);
         }
 
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
 
         .modal-content {
             background: var(--surface);
@@ -443,14 +485,8 @@
         }
 
         @keyframes slideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-header {
@@ -485,140 +521,24 @@
             box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
         }
 
-        /* DEBT CARDS */
-        .debt-card {
-            padding: 20px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .debt-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .debt-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-
-        .debt-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-
-        .debt-rate {
-            font-size: 12px;
-            color: var(--warning);
-            background: rgba(245, 158, 11, 0.1);
-            padding: 4px 12px;
-            border-radius: 6px;
-            margin-top: 4px;
-            display: inline-block;
-        }
-
-        .debt-balance {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--danger);
-        }
-
-        .debt-info {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-        }
-
-        .debt-stat-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            margin-bottom: 4px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-
-        .debt-stat-value {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        /* EMPTY STATE */
         .empty-state {
             text-align: center;
             padding: 48px 24px;
             color: var(--text-secondary);
         }
 
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-
-            .main {
-                margin-left: 0;
-                padding: 24px 16px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-title {
-                font-size: 24px;
-            }
-
-            .card {
-                padding: 16px;
-            }
-
-            .modal-content {
-                width: 95%;
-            }
-
-            .debt-info {
-                grid-template-columns: 1fr;
-            }
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 24px 16px; }
+            .nav-links { display: none; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .page-title { font-size: 24px; }
+            .month-grid { grid-template-columns: 1fr; }
         }
 
-        /* SCROLLBAR */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-secondary);
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -630,9 +550,9 @@
         </div>
         <ul class="nav-links">
             <li><a onclick="switchPage('dashboard');" class="active">Dashboard</a></li>
+            <li><a onclick="switchPage('trends');">Trends</a></li>
             <li><a onclick="switchPage('debts');">Debts</a></li>
             <li><a onclick="switchPage('transactions');">Transactions</a></li>
-            <li><a onclick="switchPage('categories');">Categories</a></li>
             <li><a onclick="switchPage('budget');">Budget</a></li>
         </ul>
     </div>
@@ -641,9 +561,9 @@
     <div class="sidebar">
         <ul class="nav-menu">
             <li class="nav-menu-item active" onclick="switchPage('dashboard')">📊 Dashboard</li>
+            <li class="nav-menu-item" onclick="switchPage('trends')">📈 Trends</li>
             <li class="nav-menu-item" onclick="switchPage('debts')">💳 Debts</li>
             <li class="nav-menu-item" onclick="switchPage('transactions')">💸 Transactions</li>
-            <li class="nav-menu-item" onclick="switchPage('categories')">🏷️ Categories</li>
             <li class="nav-menu-item" onclick="switchPage('budget')">📊 Budget</li>
         </ul>
     </div>
@@ -671,6 +591,11 @@
                     <div class="stat-value" id="netWorth">-R1.16M</div>
                     <div class="stat-change">Assets - Liabilities</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-label">📊 This Month</div>
+                    <div class="stat-value" id="thisMonthSpent">R0</div>
+                    <div class="stat-change" id="thisMonthChange">Total spent</div>
+                </div>
             </div>
 
             <div class="card">
@@ -687,6 +612,29 @@
                     <h2>💬 Recent Transactions</h2>
                 </div>
                 <div id="recentTransactions"></div>
+            </div>
+        </div>
+
+        <!-- TRENDS - MONTH TO MONTH VIEW -->
+        <div id="trends" class="page">
+            <h1 class="page-title">📈 Monthly Trends</h1>
+            <p class="page-subtitle">Track your spending and savings over time</p>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>💹 Month-to-Month Overview</h2>
+                </div>
+                <div class="month-selector">
+                    <button class="month-btn" onclick="previousMonthView()">← Previous</button>
+                    <div class="month-display" id="monthDisplay">June 2026</div>
+                    <button class="month-btn" onclick="nextMonthView()">Next →</button>
+                </div>
+
+                <div class="month-grid" id="monthGrid"></div>
+
+                <div class="chart-container">
+                    <canvas id="trendsChart"></canvas>
+                </div>
             </div>
         </div>
 
@@ -715,37 +663,18 @@
                 <div class="card-header">
                     <h2>All Transactions</h2>
                 </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Amount</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transactionsList"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- CATEGORIES -->
-        <div id="categories" class="page">
-            <h1 class="page-title">Categories</h1>
-            <p class="page-subtitle">Manage your spending categories</p>
-
-            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addCategoryModal')">
-                <span>➕</span> Add Category
-            </button>
-
-            <div class="card">
-                <div class="card-header">
-                    <h2>Categories</h2>
-                </div>
-                <div id="categoriesList"></div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsList"></tbody>
+                </table>
             </div>
         </div>
 
@@ -820,39 +749,9 @@
         </div>
     </div>
 
-    <div id="addCategoryModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">🏷️ Add Category</div>
-            <form onsubmit="addCategory(event)">
-                <div class="form-group">
-                    <label>Category Name</label>
-                    <input type="text" id="catName" placeholder="e.g., Entertainment" required>
-                </div>
-                <div class="form-group">
-                    <label>Type</label>
-                    <select id="catType" required>
-                        <option value="Expense">Expense</option>
-                        <option value="Income">Income</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Color</label>
-                    <input type="color" id="catColor" value="#10B981">
-                </div>
-                <div class="form-group">
-                    <label>Emoji (optional)</label>
-                    <input type="text" id="catIcon" placeholder="e.g., 🎬">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addCategoryModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <script>
         // DATA
+        let currentMonthView = new Date();
         let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         let debts = JSON.parse(localStorage.getItem('debts')) || [
             { id: 1, lender: 'Tymebank Personal', balance: 20259, rate: 26.25, payment: 2200 },
@@ -891,16 +790,14 @@
             if (pageId === 'dashboard') {
                 setTimeout(() => initChart(), 100);
             }
+            if (pageId === 'trends') {
+                setTimeout(() => renderTrendsChart(), 100);
+            }
         }
 
         // MODALS
-        function openModal(id) {
-            document.getElementById(id).classList.add('active');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-        }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', (e) => {
@@ -912,36 +809,6 @@
         function updateCategorySelects() {
             const expenses = categories.filter(c => c.type === 'Expense');
             document.getElementById('transCategory').innerHTML = expenses.map(c => `<option value="${c.name}">${c.icon} ${c.name}</option>`).join('');
-        }
-
-        function addCategory(e) {
-            e.preventDefault();
-            const name = document.getElementById('catName').value;
-            if (categories.find(c => c.name.toLowerCase() === name.toLowerCase())) {
-                alert('Category already exists!');
-                return;
-            }
-            categories.push({
-                id: Date.now(),
-                name,
-                type: document.getElementById('catType').value,
-                color: document.getElementById('catColor').value,
-                icon: document.getElementById('catIcon').value || '📁'
-            });
-            localStorage.setItem('categories', JSON.stringify(categories));
-            closeModal('addCategoryModal');
-            document.querySelector('#addCategoryModal form').reset();
-            updateCategorySelects();
-            renderAll();
-        }
-
-        function deleteCategory(id) {
-            if (confirm('Delete this category?')) {
-                categories = categories.filter(c => c.id !== id);
-                localStorage.setItem('categories', JSON.stringify(categories));
-                updateCategorySelects();
-                renderAll();
-            }
         }
 
         // DEBTS
@@ -993,69 +860,193 @@
             }
         }
 
+        // MONTH VIEW NAVIGATION
+        function previousMonthView() {
+            currentMonthView = new Date(currentMonthView.getFullYear(), currentMonthView.getMonth() - 1);
+            updateMonthDisplay();
+        }
+
+        function nextMonthView() {
+            currentMonthView = new Date(currentMonthView.getFullYear(), currentMonthView.getMonth() + 1);
+            updateMonthDisplay();
+        }
+
+        function updateMonthDisplay() {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+            const month = monthNames[currentMonthView.getMonth()];
+            const year = currentMonthView.getFullYear();
+            document.getElementById('monthDisplay').textContent = `${month} ${year}`;
+            renderMonthGrid();
+            renderTrendsChart();
+        }
+
+        function renderMonthGrid() {
+            const month = currentMonthView.getMonth();
+            const year = currentMonthView.getFullYear();
+            
+            // Generate 12 months from this month
+            let html = '';
+            for (let i = 0; i < 12; i++) {
+                const checkDate = new Date(year, month + i);
+                const monthTransactions = transactions.filter(t => {
+                    const tDate = new Date(t.date);
+                    return tDate.getMonth() === checkDate.getMonth() && tDate.getFullYear() === checkDate.getFullYear();
+                });
+
+                const income = monthTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+                const expenses = Math.abs(monthTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0));
+                const savings = income - expenses;
+
+                const monthName = new Date(checkDate).toLocaleDateString('en-ZA', { month: 'short', year: '2-digit' });
+
+                html += `
+                    <div class="month-card">
+                        <div class="month-card-title">${monthName}</div>
+                        <div class="month-stat">
+                            <span class="month-stat-label">Income:</span>
+                            <span class="month-stat-value">R${Math.abs(income).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span>
+                        </div>
+                        <div class="month-stat">
+                            <span class="month-stat-label">Expenses:</span>
+                            <span class="month-stat-value negative">-R${expenses.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span>
+                        </div>
+                        <div style="border-top: 1px solid var(--border); margin: 12px 0;"></div>
+                        <div class="month-stat">
+                            <span class="month-stat-label">Net Savings:</span>
+                            <span class="month-stat-value ${savings < 0 ? 'negative' : ''}">${savings < 0 ? '-' : ''}R${Math.abs(savings).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('monthGrid').innerHTML = html;
+        }
+
+        function renderTrendsChart() {
+            const ctx = document.getElementById('trendsChart');
+            if (!ctx) return;
+
+            const labels = [];
+            const incomeData = [];
+            const expenseData = [];
+            const savingsData = [];
+
+            for (let i = 11; i >= 0; i--) {
+                const month = new Date(currentMonthView.getFullYear(), currentMonthView.getMonth() - i);
+                const monthTransactions = transactions.filter(t => {
+                    const tDate = new Date(t.date);
+                    return tDate.getMonth() === month.getMonth() && tDate.getFullYear() === month.getFullYear();
+                });
+
+                const income = monthTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+                const expenses = Math.abs(monthTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0));
+
+                labels.push(month.toLocaleDateString('en-ZA', { month: 'short' }));
+                incomeData.push(income);
+                expenseData.push(expenses);
+                savingsData.push(income - expenses);
+            }
+
+            if (window.trendsChart) window.trendsChart.destroy();
+
+            window.trendsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: incomeData,
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Expenses',
+                            data: expenseData,
+                            borderColor: '#EF4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { padding: 20, font: { weight: 700 }, color: '#94A3B8' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: { color: '#94A3B8' },
+                            grid: { color: 'rgba(52, 65, 85, 0.2)' }
+                        },
+                        x: {
+                            ticks: { color: '#94A3B8' },
+                            grid: { color: 'rgba(52, 65, 85, 0.2)' }
+                        }
+                    }
+                }
+            });
+        }
+
         // RENDER ALL
         function renderAll() {
             const totalDebt = debts.reduce((sum, d) => sum + d.balance, 0);
+            const thisMonth = new Date();
+            const thisMonthTransactions = transactions.filter(t => {
+                const tDate = new Date(t.date);
+                return tDate.getMonth() === thisMonth.getMonth();
+            });
+            const thisMonthSpent = Math.abs(thisMonthTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0));
             const networth = savings - totalDebt;
 
             document.getElementById('totalDebt').textContent = 'R' + (totalDebt / 1000000).toFixed(2) + 'M';
             document.getElementById('totalSavings').textContent = 'R' + savings.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
             document.getElementById('netWorth').textContent = (networth < 0 ? '-' : '') + 'R' + Math.abs(networth / 1000000).toFixed(2) + 'M';
+            document.getElementById('thisMonthSpent').textContent = 'R' + thisMonthSpent.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
 
             // Recent transactions
             const recent = transactions.slice(-5).reverse();
             document.getElementById('recentTransactions').innerHTML = recent.length === 0
-                ? '<div class="empty-state"><div class="empty-state-icon">📋</div><p>No transactions yet</p></div>'
-                : `<div class="table-container"><table><tbody>${recent.map(t => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><span class="badge">${t.category}</span></td><td><span class="amount negative">R${Math.abs(t.amount).toFixed(2)}</span></td></tr>`).join('')}</tbody></table></div>`;
+                ? '<div class="empty-state"><p>No transactions yet</p></div>'
+                : `<table><tbody>${recent.map(t => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><span class="badge">${t.category}</span></td><td><span class="amount negative">R${Math.abs(t.amount).toFixed(2)}</span></td></tr>`).join('')}</tbody></table>`;
 
             // Debts list
             const debtsHTML = debts.map(d => {
                 const monthsLeft = Math.ceil(d.balance / d.payment);
                 return `
-                    <div class="debt-card">
-                        <div class="debt-top">
+                    <div style="padding: 20px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
                             <div>
-                                <div class="debt-title">${d.lender}</div>
-                                <div class="debt-rate">${d.rate}% APR</div>
+                                <div style="font-size: 18px; font-weight: 800;">${d.lender}</div>
+                                <div style="font-size: 12px; color: var(--warning); background: rgba(245, 158, 11, 0.1); padding: 4px 12px; border-radius: 6px; margin-top: 4px; display: inline-block;">${d.rate}% APR</div>
                             </div>
-                            <div class="debt-balance">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
+                            <div style="font-size: 28px; font-weight: 900; color: var(--danger);">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
                         </div>
-                        <div class="debt-info">
-                            <div>
-                                <div class="debt-stat-label">Monthly Payment</div>
-                                <div class="debt-stat-value">R${d.payment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
-                            </div>
-                            <div>
-                                <div class="debt-stat-label">Months to Payoff</div>
-                                <div class="debt-stat-value">${monthsLeft} months</div>
-                            </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; border-top: 1px solid var(--border); padding-top: 16px;">
+                            <div><div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">Monthly Payment</div><div style="font-size: 16px; font-weight: 800; color: var(--primary);">R${d.payment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div>
+                            <div><div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">Months to Payoff</div><div style="font-size: 16px; font-weight: 800; color: var(--primary);">${monthsLeft} months</div></div>
                         </div>
                         <button class="btn btn-danger" onclick="deleteDebt(${d.id})" style="margin-top: 16px; width: 100%;">Delete</button>
                     </div>
                 `;
             }).join('');
-            document.getElementById('debtsList').innerHTML = debtsHTML || '<div class="empty-state"><div class="empty-state-icon">💳</div><p>No debts</p></div>';
+            document.getElementById('debtsList').innerHTML = debtsHTML || '<div class="empty-state"><p>No debts</p></div>';
 
             // All transactions
             document.getElementById('transactionsList').innerHTML = transactions.length === 0
                 ? '<tr><td colspan="5"><div class="empty-state"><p>No transactions</p></div></td></tr>'
                 : transactions.map((t, i) => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><span class="badge">${t.category}</span></td><td><span class="amount negative">R${Math.abs(t.amount).toFixed(2)}</span></td><td><button class="btn btn-danger" onclick="deleteTransaction(${i})">Delete</button></td></tr>`).join('');
 
-            // Categories
-            const catHTML = categories.map(cat => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 32px; height: 32px; background-color: ${cat.color}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">${cat.icon}</div>
-                        <div><strong>${cat.name}</strong><div style="font-size: 12px; color: var(--text-secondary);">${cat.type}</div></div>
-                    </div>
-                    <button class="btn btn-danger" onclick="deleteCategory(${cat.id})">Delete</button>
-                </div>
-            `).join('');
-            document.getElementById('categoriesList').innerHTML = catHTML || '<div class="empty-state"><p>No categories</p></div>';
-
             // Budget
             const budgetHTML = budgets.map(b => {
-                const spent = Math.abs(transactions.filter(t => t.category === b.category).reduce((sum, t) => sum + t.amount, 0));
+                const spent = Math.abs(thisMonthTransactions.filter(t => t.category === b.category).reduce((sum, t) => sum + t.amount, 0));
                 const pct = (spent / b.limit) * 100;
                 return `
                     <div style="margin-bottom: 28px;">
@@ -1071,6 +1062,9 @@
                 `;
             }).join('');
             document.getElementById('budgetList').innerHTML = budgetHTML || '<div class="empty-state"><p>No budgets</p></div>';
+
+            // Initialize month grid
+            renderMonthGrid();
         }
 
         // CHART
