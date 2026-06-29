@@ -584,7 +584,7 @@
                 <div class="stat-card">
                     <div class="stat-label">💰 Total Savings</div>
                     <div class="stat-value" id="totalSavings">R2,500</div>
-                    <div class="stat-change">Emergency fund</div>
+                    <div class="stat-change">Available cash</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">📈 Net Worth</div>
@@ -669,6 +669,7 @@
                             <th>Date</th>
                             <th>Description</th>
                             <th>Category</th>
+                            <th>Type</th>
                             <th>Amount</th>
                             <th>Action</th>
                         </tr>
@@ -736,6 +737,15 @@
                 <div class="form-group">
                     <label>Category</label>
                     <select id="transCategory" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="transType" required>
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                        <option value="debt_payment">Debt Payment</option>
+                        <option value="savings">Savings</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Amount (R)</label>
@@ -811,6 +821,24 @@
             document.getElementById('transCategory').innerHTML = expenses.map(c => `<option value="${c.name}">${c.icon} ${c.name}</option>`).join('');
         }
 
+        // CALCULATE BALANCES FROM TRANSACTIONS
+        function calculateBalances() {
+            let currentSavings = 2500;
+            let currentDebts = [20259, 51657, 69517, 1036899];
+
+            transactions.forEach(t => {
+                if (t.type === 'savings') {
+                    currentSavings += parseFloat(t.amount);
+                } else if (t.type === 'debt_payment') {
+                    for (let i = 0; i < currentDebts.length; i++) {
+                        currentDebts[i] -= parseFloat(t.amount) / currentDebts.length;
+                    }
+                }
+            });
+
+            return { savings: Math.max(0, currentSavings), debts: currentDebts };
+        }
+
         // DEBTS
         function addDebt(e) {
             e.preventDefault();
@@ -838,18 +866,22 @@
         // TRANSACTIONS
         function addTransaction(e) {
             e.preventDefault();
+            const type = document.getElementById('transType').value;
+            const amount = parseFloat(document.getElementById('transAmount').value);
+            
             transactions.push({
                 date: document.getElementById('transDate').value,
                 description: document.getElementById('transDesc').value,
                 category: document.getElementById('transCategory').value,
-                amount: -parseFloat(document.getElementById('transAmount').value),
-                type: 'expense'
+                amount: amount,
+                type: type
             });
             localStorage.setItem('transactions', JSON.stringify(transactions));
             closeModal('addTransactionModal');
             document.querySelector('#addTransactionModal form').reset();
             document.getElementById('transDate').valueAsDate = new Date();
             renderAll();
+            initChart();
         }
 
         function deleteTransaction(index) {
@@ -857,6 +889,7 @@
                 transactions.splice(index, 1);
                 localStorage.setItem('transactions', JSON.stringify(transactions));
                 renderAll();
+                initChart();
             }
         }
 
@@ -885,7 +918,6 @@
             const month = currentMonthView.getMonth();
             const year = currentMonthView.getFullYear();
             
-            // Generate 12 months from this month
             let html = '';
             for (let i = 0; i < 12; i++) {
                 const checkDate = new Date(year, month + i);
@@ -929,7 +961,6 @@
             const labels = [];
             const incomeData = [];
             const expenseData = [];
-            const savingsData = [];
 
             for (let i = 11; i >= 0; i--) {
                 const month = new Date(currentMonthView.getFullYear(), currentMonthView.getMonth() - i);
@@ -944,7 +975,6 @@
                 labels.push(month.toLocaleDateString('en-ZA', { month: 'short' }));
                 incomeData.push(income);
                 expenseData.push(expenses);
-                savingsData.push(income - expenses);
             }
 
             if (window.trendsChart) window.trendsChart.destroy();
@@ -997,17 +1027,40 @@
 
         // RENDER ALL
         function renderAll() {
-            const totalDebt = debts.reduce((sum, d) => sum + d.balance, 0);
+            // Calculate current balances
+            let currentSavings = 2500;
+            let debtAdjustments = [0, 0, 0, 0];
+
+            transactions.forEach(t => {
+                if (t.type === 'savings') {
+                    currentSavings += parseFloat(t.amount);
+                } else if (t.type === 'debt_payment') {
+                    const amount = parseFloat(t.amount) / 4;
+                    for (let i = 0; i < 4; i++) {
+                        debtAdjustments[i] += amount;
+                    }
+                }
+            });
+
+            const currentDebts = [
+                debts[0].balance - debtAdjustments[0],
+                debts[1].balance - debtAdjustments[1],
+                debts[2].balance - debtAdjustments[2],
+                debts[3].balance - debtAdjustments[3]
+            ];
+
+            const totalDebt = currentDebts.reduce((a, b) => a + b, 0);
             const thisMonth = new Date();
             const thisMonthTransactions = transactions.filter(t => {
                 const tDate = new Date(t.date);
                 return tDate.getMonth() === thisMonth.getMonth();
             });
             const thisMonthSpent = Math.abs(thisMonthTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0));
-            const networth = savings - totalDebt;
+            const networth = currentSavings - totalDebt;
 
+            // Update display
             document.getElementById('totalDebt').textContent = 'R' + (totalDebt / 1000000).toFixed(2) + 'M';
-            document.getElementById('totalSavings').textContent = 'R' + savings.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
+            document.getElementById('totalSavings').textContent = 'R' + currentSavings.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
             document.getElementById('netWorth').textContent = (networth < 0 ? '-' : '') + 'R' + Math.abs(networth / 1000000).toFixed(2) + 'M';
             document.getElementById('thisMonthSpent').textContent = 'R' + thisMonthSpent.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
 
@@ -1015,11 +1068,12 @@
             const recent = transactions.slice(-5).reverse();
             document.getElementById('recentTransactions').innerHTML = recent.length === 0
                 ? '<div class="empty-state"><p>No transactions yet</p></div>'
-                : `<table><tbody>${recent.map(t => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><span class="badge">${t.category}</span></td><td><span class="amount negative">R${Math.abs(t.amount).toFixed(2)}</span></td></tr>`).join('')}</tbody></table>`;
+                : `<table><tbody>${recent.map(t => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><span class="badge">${t.category}</span></td><td><strong>${t.type}</strong></td><td><span class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span></td></tr>`).join('')}</tbody></table>`;
 
-            // Debts list
-            const debtsHTML = debts.map(d => {
-                const monthsLeft = Math.ceil(d.balance / d.payment);
+            // Debts list with updated balances
+            const debtsHTML = currentDebts.map((balance, idx) => {
+                const d = debts[idx];
+                const monthsLeft = Math.max(1, Math.ceil(balance / d.payment));
                 return `
                     <div style="padding: 20px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px;">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
@@ -1027,7 +1081,7 @@
                                 <div style="font-size: 18px; font-weight: 800;">${d.lender}</div>
                                 <div style="font-size: 12px; color: var(--warning); background: rgba(245, 158, 11, 0.1); padding: 4px 12px; border-radius: 6px; margin-top: 4px; display: inline-block;">${d.rate}% APR</div>
                             </div>
-                            <div style="font-size: 28px; font-weight: 900; color: var(--danger);">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
+                            <div style="font-size: 28px; font-weight: 900; color: var(--danger);">R${balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
                         </div>
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; border-top: 1px solid var(--border); padding-top: 16px;">
                             <div><div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">Monthly Payment</div><div style="font-size: 16px; font-weight: 800; color: var(--primary);">R${d.payment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div>
@@ -1041,8 +1095,8 @@
 
             // All transactions
             document.getElementById('transactionsList').innerHTML = transactions.length === 0
-                ? '<tr><td colspan="5"><div class="empty-state"><p>No transactions</p></div></td></tr>'
-                : transactions.map((t, i) => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><span class="badge">${t.category}</span></td><td><span class="amount negative">R${Math.abs(t.amount).toFixed(2)}</span></td><td><button class="btn btn-danger" onclick="deleteTransaction(${i})">Delete</button></td></tr>`).join('');
+                ? '<tr><td colspan="6"><div class="empty-state"><p>No transactions</p></div></td></tr>'
+                : transactions.map((t, i) => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><span class="badge">${t.category}</span></td><td><strong>${t.type}</strong></td><td><span class="amount ${t.type === 'income' || t.type === 'savings' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span></td><td><button class="btn btn-danger" onclick="deleteTransaction(${i})">Delete</button></td></tr>`).join('');
 
             // Budget
             const budgetHTML = budgets.map(b => {
