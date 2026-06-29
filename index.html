@@ -477,6 +477,7 @@
             <li><a onclick="switchPage('expenses');">Expenses</a></li>
             <li><a onclick="switchPage('income');">Income</a></li>
             <li><a onclick="switchPage('transactions');">Transactions</a></li>
+            <li><a onclick="switchPage('budget');">Budget</a></li>
         </ul>
     </div>
 
@@ -488,6 +489,7 @@
             <li class="nav-menu-item" onclick="switchPage('expenses')">💸 Expenses</li>
             <li class="nav-menu-item" onclick="switchPage('income')">💵 Income</li>
             <li class="nav-menu-item" onclick="switchPage('transactions')">📝 Transactions</li>
+            <li class="nav-menu-item" onclick="switchPage('budget')">📊 Budget</li>
         </ul>
     </div>
 
@@ -548,13 +550,22 @@
         </div>
 
         <div id="transactions" class="page">
-            <h1 class="page-title">Transactions</h1>
+            <h1 class="page-title">📝 Transactions</h1>
             <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addTransactionModal')">➕ Add</button>
             <div class="card">
                 <table>
                     <thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Account</th><th>Amount</th><th>Action</th></tr></thead>
                     <tbody id="transactionsList"></tbody>
                 </table>
+            </div>
+        </div>
+
+        <div id="budget" class="page">
+            <h1 class="page-title">📊 Budget</h1>
+            <p class="page-subtitle">Monitor your monthly spending</p>
+            <div class="card">
+                <div class="card-header"><h2>Monthly Budget</h2></div>
+                <div id="budgetList"></div>
             </div>
         </div>
     </div>
@@ -651,6 +662,11 @@
         ];
         let incomeAccounts = JSON.parse(localStorage.getItem('incomeAccounts')) || [
             { id: 1, name: 'Salary' }
+        ];
+        let budgets = JSON.parse(localStorage.getItem('budgets')) || [
+            { category: 'Food', limit: 2500 },
+            { category: 'Transport', limit: 3000 },
+            { category: 'Utilities', limit: 4211 }
         ];
 
         document.getElementById('transDate').valueAsDate = new Date();
@@ -861,6 +877,17 @@
             document.getElementById('incomeList').innerHTML = incomeAccounts.map(i => `<div class="account-card"><div class="account-header"><div class="account-name">${i.name}</div></div><button class="btn btn-danger" onclick="deleteIncome(${i.id})" style="width: 100%;">Delete</button></div>`).join('') || '<div class="empty-state">No accounts</div>';
 
             document.getElementById('transactionsList').innerHTML = transactions.length === 0 ? '<tr><td colspan="6"><div class="empty-state">No transactions</div></td></tr>' : transactions.map((t, i) => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td>${t.type}</td><td>${getAccountName(t.type, t.account)}</td><td class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</td><td><button class="btn btn-danger" onclick="deleteTransaction(${i})">Delete</button></td></tr>`).join('');
+
+            // Budget
+            const budgetHTML = budgets.map(b => {
+                const spent = Math.abs(tmt.filter(t => {
+                    const desc = t.description.toLowerCase();
+                    return t.type === 'expense' && desc.includes(b.category.toLowerCase());
+                }).reduce((s, t) => s + t.amount, 0));
+                const pct = (spent / b.limit) * 100;
+                return `<div style="margin-bottom: 28px;"><div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><strong>${b.category}</strong><span>R${spent.toFixed(0)} / R${b.limit}</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(pct, 100)}%; background: linear-gradient(90deg, ${pct > 100 ? '#EF4444' : '#10B981'}, ${pct > 100 ? '#DC2626' : '#06B6D4'});"></div></div><div style="font-size: 12px; color: var(--text-secondary);">${pct.toFixed(0)}% used</div></div>`;
+            }).join('');
+            document.getElementById('budgetList').innerHTML = budgetHTML || '<div class="empty-state">No budgets</div>';
         }
 
         function initChart() {
