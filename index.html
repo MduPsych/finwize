@@ -6,11 +6,14 @@
     <title>FinWise - Personal Finance Manager</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         :root {
             --primary: #6366F1;
-            --primary-dark: #4F46E5;
             --accent: #EC4899;
             --success: #10B981;
             --warning: #F59E0B;
@@ -20,9 +23,7 @@
             --surface-secondary: #F9FAFB;
             --text-primary: #111827;
             --text-secondary: #6B7280;
-            --text-muted: #9CA3AF;
             --border: #E5E7EB;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
         body {
@@ -51,9 +52,6 @@
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
 
         .nav-links {
@@ -70,26 +68,11 @@
             font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
         }
 
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
+        .nav-links a:hover,
         .nav-links a.active {
             color: var(--primary);
-        }
-
-        .nav-links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 1px;
         }
 
         .sidebar {
@@ -105,7 +88,9 @@
             z-index: 50;
         }
 
-        .nav-menu { list-style: none; }
+        .nav-menu {
+            list-style: none;
+        }
 
         .nav-menu-item {
             padding: 14px 24px;
@@ -113,9 +98,6 @@
             color: var(--text-secondary);
             font-weight: 600;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
             margin: 4px 12px;
             border-radius: 10px;
             font-size: 14px;
@@ -144,366 +126,31 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .page.active { display: block; }
+        .page.active {
+            display: block;
+        }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .page-title {
             font-size: 32px;
             font-weight: 900;
             margin-bottom: 12px;
-            color: var(--text-primary);
         }
 
         .page-subtitle {
             font-size: 14px;
             color: var(--text-secondary);
             margin-bottom: 32px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary);
-            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.12);
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .card h2 {
-            font-size: 20px;
-            font-weight: 800;
-            margin: 0;
-        }
-
-        .account-card {
-            padding: 20px;
-            background: var(--surface-secondary);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            margin-bottom: 16px;
-            transition: all 0.3s;
-        }
-
-        .account-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
-        }
-
-        .account-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-
-        .account-name {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .account-type {
-            font-size: 12px;
-            color: var(--warning);
-            background: rgba(245, 158, 11, 0.1);
-            padding: 4px 12px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-top: 4px;
-            font-weight: 600;
-        }
-
-        .account-balance {
-            font-size: 26px;
-            font-weight: 900;
-            color: var(--danger);
-        }
-
-        .account-balance.positive {
-            color: var(--success);
-        }
-
-        .account-info {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            border-top: 1px solid var(--border);
-            padding-top: 16px;
-        }
-
-        .account-stat-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .account-stat-value {
-            font-size: 16px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-secondary {
-            background: var(--surface-secondary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--border);
-        }
-
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            padding: 8px 16px;
-            font-size: 12px;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-size: 14px;
-            font-family: inherit;
-            background: var(--surface-secondary);
-            color: var(--text-primary);
-            transition: all 0.3s;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-            background: var(--surface);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            padding: 14px 16px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 800;
-            text-transform: uppercase;
-            border-bottom: 2px solid var(--border);
-            background: var(--surface-secondary);
-        }
-
-        td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .amount { font-weight: 800; }
-        .amount.positive { color: var(--success); }
-        .amount.negative { color: var(--danger); }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal.active { display: flex; }
-
-        .modal-content {
-            background: var(--surface);
-            padding: 32px;
-            border-radius: 20px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--border);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            font-size: 22px;
-            font-weight: 900;
-            margin-bottom: 24px;
-            color: var(--text-primary);
-        }
-
-        .modal-footer {
-            display: flex;
-            gap: 12px;
-            margin-top: 28px;
-            justify-content: flex-end;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: var(--surface-secondary);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 12px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 48px 24px;
-            color: var(--text-secondary);
-        }
-
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin-bottom: 24px;
-        }
-
-        .budget-card {
-            padding: 20px;
-            background: var(--surface-secondary);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            margin-bottom: 16px;
-        }
-
-        .budget-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .budget-category {
-            font-size: 16px;
-            font-weight: 800;
         }
 
         .payoff-timeline {
@@ -547,9 +194,10 @@
 
         .payoff-status {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
             font-size: 12px;
+            margin-bottom: 16px;
         }
 
         .payoff-stat {
@@ -576,498 +224,703 @@
             font-size: 14px;
         }
 
-        .recurring-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.15));
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 11px;
+        .savings-badge {
+            display: block;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.1));
+            color: var(--success);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 700;
-            margin-left: 8px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin-top: 10px;
         }
 
-        .actions-btns {
-            display: flex;
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
             gap: 8px;
-            margin-top: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--surface-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            padding: 8px 16px;
+            font-size: 12px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--surface-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            background: var(--surface);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 800;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border);
+            background: var(--surface-secondary);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            padding: 32px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 24px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+            justify-content: flex-end;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-secondary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 24px;
         }
 
         @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .main { margin-left: 0; padding: 24px 16px; }
-            .nav-links { display: none; }
+            .sidebar {
+                display: none;
+            }
+            .main {
+                margin-left: 0;
+                padding: 24px 16px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .payoff-status {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- NAVBAR -->
     <div class="navbar">
         <div class="navbar-brand">💰 FinWise</div>
         <ul class="nav-links">
-            <li><a onclick="switchPage('dashboard');" class="active">Dashboard</a></li>
-            <li><a onclick="switchPage('debts');">Debts</a></li>
-            <li><a onclick="switchPage('payoff');">Payoff</a></li>
-            <li><a onclick="switchPage('transactions');">Transactions</a></li>
-            <li><a onclick="switchPage('budget');">Budget</a></li>
+            <li><a onclick="switchPage('payoff');">⏱️ Smart Payoff</a></li>
+            <li><a onclick="switchPage('transactions');">📝 Transactions</a></li>
         </ul>
     </div>
 
+    <!-- SIDEBAR -->
     <div class="sidebar">
         <ul class="nav-menu">
-            <li class="nav-menu-item active" onclick="switchPage('dashboard')">📊 Dashboard</li>
-            <li class="nav-menu-item" onclick="switchPage('debts')">💳 Debts</li>
-            <li class="nav-menu-item" onclick="switchPage('payoff')">⏱️ Payoff Timeline</li>
-            <li class="nav-menu-item" onclick="switchPage('savings')">💰 Savings</li>
-            <li class="nav-menu-item" onclick="switchPage('expenses')">💸 Expenses</li>
-            <li class="nav-menu-item" onclick="switchPage('income')">💵 Income</li>
-            <li class="nav-menu-item" onclick="switchPage('transactions')">📝 Transactions</li>
-            <li class="nav-menu-item" onclick="switchPage('budget')">📊 Budget</li>
+            <li class="nav-menu-item active" onclick="switchPage('payoff')">
+                ⏱️ Payoff Timeline
+            </li>
+            <li class="nav-menu-item" onclick="switchPage('debts')">
+                💳 Debts
+            </li>
+            <li class="nav-menu-item" onclick="switchPage('transactions')">
+                📝 Transactions
+            </li>
         </ul>
     </div>
 
+    <!-- MAIN CONTENT -->
     <div class="main">
-        <div id="dashboard" class="page active">
-            <h1 class="page-title">Dashboard</h1>
-            <p class="page-subtitle">Welcome back! Here's your financial snapshot</p>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">💳 Total Debt</div>
-                    <div class="stat-value" id="totalDebt">R1.18M</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">💰 Total Savings</div>
-                    <div class="stat-value" id="totalSavings">R2,500</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">📈 Net Worth</div>
-                    <div class="stat-value" id="netWorth">-R1.16M</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">📊 This Month</div>
-                    <div class="stat-value" id="thisMonthSpent">R0</div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header"><h2>📊 Income vs Expenses</h2></div>
-                <div class="chart-container"><canvas id="dashboardChart"></canvas></div>
-            </div>
-            <div class="card">
-                <div class="card-header"><h2>Recent Transactions</h2></div>
-                <div id="recentTransactions"></div>
-            </div>
+        <!-- PAYOFF PAGE -->
+        <div id="payoff" class="page active">
+            <h1 class="page-title">⏱️ Smart Debt Payoff Timeline</h1>
+            <p class="page-subtitle">
+                Months to payoff now includes your actual payment history
+            </p>
+            <div id="payoffTimeline" class="payoff-timeline"></div>
         </div>
 
+        <!-- DEBTS PAGE -->
         <div id="debts" class="page">
             <h1 class="page-title">💳 Debts</h1>
-            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addDebtModal')">➕ Add Debt</button>
+            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addDebtModal')">
+                ➕ Add Debt
+            </button>
             <div id="debtsList"></div>
         </div>
 
-        <div id="payoff" class="page">
-            <h1 class="page-title">⏱️ Debt Payoff Timeline</h1>
-            <p class="page-subtitle">Your path to financial freedom</p>
-            <div class="payoff-timeline" id="payoffTimeline"></div>
-        </div>
-
-        <div id="savings" class="page">
-            <h1 class="page-title">💰 Savings</h1>
-            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addSavingsModal')">➕ Add Savings</button>
-            <div id="savingsList"></div>
-        </div>
-
-        <div id="expenses" class="page">
-            <h1 class="page-title">💸 Expenses</h1>
-            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addExpenseModal')">➕ Add Account</button>
-            <div id="expensesList"></div>
-        </div>
-
-        <div id="income" class="page">
-            <h1 class="page-title">💵 Income</h1>
-            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addIncomeModal')">➕ Add Account</button>
-            <div id="incomeList"></div>
-        </div>
-
+        <!-- TRANSACTIONS PAGE -->
         <div id="transactions" class="page">
             <h1 class="page-title">📝 Transactions</h1>
-            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addTransactionModal')">➕ Add Transaction</button>
+            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addTransactionModal')">
+                ➕ Add Debt Payment
+            </button>
             <div class="card">
                 <table>
-                    <thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Account</th><th>Amount</th><th>Actions</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Debt</th>
+                            <th>Amount Paid</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
                     <tbody id="transactionsList"></tbody>
                 </table>
             </div>
         </div>
-
-        <div id="budget" class="page">
-            <h1 class="page-title">📊 Budget</h1>
-            <p class="page-subtitle">Keep your spending on track</p>
-            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addBudgetModal')">➕ Add Budget</button>
-            <div id="budgetList"></div>
-        </div>
     </div>
 
     <!-- MODALS -->
+    
+    <!-- Add Debt Modal -->
     <div id="addDebtModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">Add Debt</div>
             <form onsubmit="addDebt(event)">
-                <div class="form-group"><label>Name</label><input type="text" id="debtName" required></div>
-                <div class="form-group"><label>Balance (R)</label><input type="number" id="debtBalance" step="0.01" required></div>
-                <div class="form-group"><label>Interest Rate (%)</label><input type="number" id="debtRate" step="0.01" value="15.0" required></div>
-                <div class="form-group"><label>Monthly Payment (R)</label><input type="number" id="debtPayment" step="0.01" required></div>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="debtName" required>
+                </div>
+                <div class="form-group">
+                    <label>Balance (R)</label>
+                    <input type="number" id="debtBalance" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Interest Rate (% annual)</label>
+                    <input type="number" id="debtRate" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Monthly Payment (R)</label>
+                    <input type="number" id="debtPayment" step="0.01" required>
+                </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addDebtModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Debt</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addDebtModal')">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Add
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="addSavingsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">Add Savings Account</div>
-            <form onsubmit="addSavings(event)">
-                <div class="form-group"><label>Name</label><input type="text" id="savingsName" required></div>
-                <div class="form-group"><label>Balance (R)</label><input type="number" id="savingsBalance" step="0.01" required></div>
-                <div class="form-group"><label>Target (R)</label><input type="number" id="savingsTarget" step="0.01" required></div>
-                <div class="form-group"><label>Interest (%)</label><input type="number" id="savingsRate" step="0.01" value="4.0"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addSavingsModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Savings</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="addExpenseModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">Add Expense Account</div>
-            <form onsubmit="addExpense(event)">
-                <div class="form-group"><label>Account Name</label><input type="text" id="expenseName" required></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addExpenseModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="addIncomeModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">Add Income Account</div>
-            <form onsubmit="addIncome(event)">
-                <div class="form-group"><label>Account Name</label><input type="text" id="incomeName" required></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addIncomeModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="addBudgetModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">Add Budget</div>
-            <form onsubmit="addBudget(event)">
-                <div class="form-group"><label>Category</label><input type="text" id="budgetCategory" placeholder="e.g., Groceries" required></div>
-                <div class="form-group"><label>Monthly Limit (R)</label><input type="number" id="budgetLimit" step="0.01" placeholder="0.00" required></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addBudgetModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Budget</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    <!-- Add Payment Modal -->
     <div id="addTransactionModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header" id="transModalTitle">Add Transaction</div>
-            <form onsubmit="saveTransaction(event)">
-                <div class="form-group"><label>Date</label><input type="date" id="transDate" required></div>
-                <div class="form-group"><label>Description</label><input type="text" id="transDesc" required></div>
-                <div class="form-group"><label>Type</label><select id="transType" onchange="updateAccountSelect()" required><option value="">Select Type</option><option value="income">Income</option><option value="expense">Expense</option><option value="debt_payment">Debt Payment</option><option value="savings_deposit">Savings Deposit</option></select></div>
-                <div class="form-group"><label>Account</label><select id="transAccount" required><option value="">Select Account</option></select></div>
-                <div class="form-group"><label>Amount (R)</label><input type="number" id="transAmount" step="0.01" required></div>
-                <div class="form-group"><label>Notes</label><textarea id="transNotes" placeholder="Add notes about this transaction..."></textarea></div>
+            <div class="modal-header">Add Debt Payment</div>
+            <form onsubmit="addPayment(event)">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="payDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Debt</label>
+                    <select id="payDebt" required>
+                        <option value="">Select Debt</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount (R)</label>
+                    <input type="number" id="payAmount" step="0.01" required>
+                </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeAddTransaction()">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="transSaveBtn">Add</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addTransactionModal')">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Add Payment
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- JAVASCRIPT -->
     <script>
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        // Load data from localStorage
         let debts = JSON.parse(localStorage.getItem('debts')) || [
-            { id: 1, name: 'Tymebank Personal', balance: 20259, rate: 26.25, payment: 2200 },
-            { id: 2, name: 'Nedbank Personal', balance: 51657, rate: 15.25, payment: 2246 },
-            { id: 3, name: 'Car Finance', balance: 69517, rate: 12.40, payment: 8695 },
-            { id: 4, name: 'House Bond', balance: 1036899, rate: 9.95, payment: 11499 }
+            {
+                id: 1,
+                name: 'Tymebank Personal',
+                balance: 20259,
+                rate: 26.25,
+                payment: 2200
+            },
+            {
+                id: 2,
+                name: 'Nedbank Personal',
+                balance: 51657,
+                rate: 15.25,
+                payment: 2246
+            },
+            {
+                id: 3,
+                name: 'Car Finance',
+                balance: 69517,
+                rate: 12.40,
+                payment: 8695
+            },
+            {
+                id: 4,
+                name: 'House Bond',
+                balance: 1036899,
+                rate: 9.95,
+                payment: 11499
+            }
         ];
-        let savingsAccounts = JSON.parse(localStorage.getItem('savingsAccounts')) || [
-            { id: 1, name: 'Emergency Fund', balance: 2500, target: 39400, rate: 4.0 }
-        ];
-        let expenseAccounts = JSON.parse(localStorage.getItem('expenseAccounts')) || [
-            { id: 1, name: 'Daily Spending' }
-        ];
-        let incomeAccounts = JSON.parse(localStorage.getItem('incomeAccounts')) || [
-            { id: 1, name: 'Salary' }
-        ];
-        let budgets = JSON.parse(localStorage.getItem('budgets')) || [
-            { id: 1, category: 'Food', limit: 2500 },
-            { id: 2, category: 'Transport', limit: 3000 },
-            { id: 3, category: 'Utilities', limit: 4211 }
-        ];
-        let recurring = JSON.parse(localStorage.getItem('recurring')) || [];
 
-        let editingTransactionIndex = null;
+        let payments = JSON.parse(localStorage.getItem('payments')) || [];
 
-        document.getElementById('transDate').valueAsDate = new Date();
+        // Set today's date
+        document.getElementById('payDate').valueAsDate = new Date();
+
+        // Initial render
         renderAll();
-        initChart();
-        applyRecurringTransactions();
 
-        function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-menu-item, .nav-links a').forEach(i => i.classList.remove('active'));
-            event.target.classList.add('active');
-            renderAll();
-            if (pageId === 'dashboard') setTimeout(() => initChart(), 100);
+        /**
+         * Calculate payoff months using AVERAGE of actual payments
+         * This makes the timeline smart - if you pay extra, it shows fewer months
+         */
+        function calculatePayoffSmartly(debtId) {
+            const debt = debts.find(d => d.id === debtId);
+            if (!debt) {
+                return {
+                    months: null,
+                    totalInterest: 0,
+                    avgPayment: debt.payment
+                };
+            }
+
+            // Calculate AVERAGE payment from transaction history
+            const debtPayments = payments.filter(p => p.debtId === debtId);
+            let avgPayment = debt.payment;
+
+            if (debtPayments.length > 0) {
+                const totalPaid = debtPayments.reduce((sum, p) => sum + p.amount, 0);
+                avgPayment = totalPaid / debtPayments.length;
+            }
+
+            // Run amortization calculation with average payment
+            const monthlyRate = debt.rate / 100 / 12;
+            let balance = debt.balance;
+            let months = 0;
+            let totalInterest = 0;
+            const maxMonths = 600;
+
+            while (balance > 0.01 && months < maxMonths) {
+                const interestCharge = balance * monthlyRate;
+                const principalPayment = avgPayment - interestCharge;
+
+                if (principalPayment <= 0) {
+                    return {
+                        months: null,
+                        totalInterest: 0,
+                        avgPayment: avgPayment
+                    };
+                }
+
+                totalInterest += interestCharge;
+                balance -= principalPayment;
+                months++;
+            }
+
+            return {
+                months: months,
+                totalInterest: totalInterest,
+                avgPayment: avgPayment
+            };
         }
 
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        function closeAddTransaction() { editingTransactionIndex = null; closeModal('addTransactionModal'); document.querySelector('#addTransactionModal form').reset(); document.getElementById('transDate').valueAsDate = new Date(); }
+        /**
+         * Switch between pages
+         */
+        function switchPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+            });
 
-        document.querySelectorAll('.modal').forEach(m => {
-            m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('active'); });
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+
+            // Update sidebar active state
+            document.querySelectorAll('.nav-menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-menu-item')?.classList.add('active');
+
+            renderAll();
+        }
+
+        /**
+         * Modal functions
+         */
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
         });
 
-        function updateAccountSelect() {
-            const type = document.getElementById('transType').value;
-            const sel = document.getElementById('transAccount');
-            sel.innerHTML = '<option value="">Select Account</option>';
-            if (type === 'debt_payment') debts.forEach(d => sel.innerHTML += `<option value="debt_${d.id}">${d.name}</option>`);
-            else if (type === 'savings_deposit') savingsAccounts.forEach(s => sel.innerHTML += `<option value="savings_${s.id}">${s.name}</option>`);
-            else if (type === 'expense') expenseAccounts.forEach(e => sel.innerHTML += `<option value="expense_${e.id}">${e.name}</option>`);
-            else if (type === 'income') incomeAccounts.forEach(i => sel.innerHTML += `<option value="income_${i.id}">${i.name}</option>`);
-        }
+        /**
+         * Add a new debt
+         */
+        function addDebt(event) {
+            event.preventDefault();
 
-        function addDebt(e) { e.preventDefault(); debts.push({ id: Date.now(), name: document.getElementById('debtName').value, balance: parseFloat(document.getElementById('debtBalance').value), rate: parseFloat(document.getElementById('debtRate').value), payment: parseFloat(document.getElementById('debtPayment').value) }); localStorage.setItem('debts', JSON.stringify(debts)); closeModal('addDebtModal'); document.querySelector('#addDebtModal form').reset(); renderAll(); }
-        function deleteDebt(id) { if (confirm('Delete this debt?')) { debts = debts.filter(d => d.id !== id); localStorage.setItem('debts', JSON.stringify(debts)); renderAll(); } }
+            debts.push({
+                id: Date.now(),
+                name: document.getElementById('debtName').value,
+                balance: parseFloat(document.getElementById('debtBalance').value),
+                rate: parseFloat(document.getElementById('debtRate').value),
+                payment: parseFloat(document.getElementById('debtPayment').value)
+            });
 
-        function addSavings(e) { e.preventDefault(); savingsAccounts.push({ id: Date.now(), name: document.getElementById('savingsName').value, balance: parseFloat(document.getElementById('savingsBalance').value), target: parseFloat(document.getElementById('savingsTarget').value), rate: parseFloat(document.getElementById('savingsRate').value) }); localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts)); closeModal('addSavingsModal'); document.querySelector('#addSavingsModal form').reset(); renderAll(); }
-        function deleteSavings(id) { if (confirm('Delete this account?')) { savingsAccounts = savingsAccounts.filter(s => s.id !== id); localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts)); renderAll(); } }
-
-        function addExpense(e) { e.preventDefault(); expenseAccounts.push({ id: Date.now(), name: document.getElementById('expenseName').value }); localStorage.setItem('expenseAccounts', JSON.stringify(expenseAccounts)); closeModal('addExpenseModal'); document.querySelector('#addExpenseModal form').reset(); renderAll(); }
-        function deleteExpense(id) { if (confirm('Delete?')) { expenseAccounts = expenseAccounts.filter(e => e.id !== id); localStorage.setItem('expenseAccounts', JSON.stringify(expenseAccounts)); renderAll(); } }
-
-        function addIncome(e) { e.preventDefault(); incomeAccounts.push({ id: Date.now(), name: document.getElementById('incomeName').value }); localStorage.setItem('incomeAccounts', JSON.stringify(incomeAccounts)); closeModal('addIncomeModal'); document.querySelector('#addIncomeModal form').reset(); renderAll(); }
-        function deleteIncome(id) { if (confirm('Delete?')) { incomeAccounts = incomeAccounts.filter(i => i.id !== id); localStorage.setItem('incomeAccounts', JSON.stringify(incomeAccounts)); renderAll(); } }
-
-        function addBudget(e) { e.preventDefault(); budgets.push({ id: Date.now(), category: document.getElementById('budgetCategory').value, limit: parseFloat(document.getElementById('budgetLimit').value) }); localStorage.setItem('budgets', JSON.stringify(budgets)); closeModal('addBudgetModal'); document.querySelector('#addBudgetModal form').reset(); renderAll(); }
-        function deleteBudget(id) { if (confirm('Delete?')) { budgets = budgets.filter(b => b.id !== id); localStorage.setItem('budgets', JSON.stringify(budgets)); renderAll(); } }
-
-        function openTransactionModal(index) {
-            editingTransactionIndex = index;
-            const trans = transactions[index];
-            document.getElementById('transModalTitle').textContent = 'Edit Transaction';
-            document.getElementById('transSaveBtn').textContent = 'Update';
-            document.getElementById('transDate').value = trans.date;
-            document.getElementById('transDesc').value = trans.description;
-            document.getElementById('transType').value = trans.type;
-            updateAccountSelect();
-            document.getElementById('transAccount').value = trans.account;
-            document.getElementById('transAmount').value = trans.amount;
-            document.getElementById('transNotes').value = trans.notes || '';
-            openModal('addTransactionModal');
-        }
-
-        function saveTransaction(e) {
-            e.preventDefault();
-            const type = document.getElementById('transType').value;
-            const acctId = document.getElementById('transAccount').value;
-            const amt = parseFloat(document.getElementById('transAmount').value);
-
-            if (editingTransactionIndex !== null) {
-                const oldTrans = transactions[editingTransactionIndex];
-                if (oldTrans.type === 'debt_payment') {
-                    const did = parseInt(oldTrans.account.split('_')[1]);
-                    const d = debts.find(x => x.id === did);
-                    if (d) d.balance += oldTrans.amount;
-                } else if (oldTrans.type === 'savings_deposit') {
-                    const sid = parseInt(oldTrans.account.split('_')[1]);
-                    const s = savingsAccounts.find(x => x.id === sid);
-                    if (s) s.balance -= oldTrans.amount;
-                }
-
-                transactions[editingTransactionIndex] = {
-                    date: document.getElementById('transDate').value,
-                    description: document.getElementById('transDesc').value,
-                    type: type,
-                    account: acctId,
-                    amount: amt,
-                    notes: document.getElementById('transNotes').value
-                };
-            } else {
-                transactions.push({
-                    date: document.getElementById('transDate').value,
-                    description: document.getElementById('transDesc').value,
-                    type: type,
-                    account: acctId,
-                    amount: amt,
-                    notes: document.getElementById('transNotes').value
-                });
-            }
-
-            if (type === 'debt_payment') {
-                const did = parseInt(acctId.split('_')[1]);
-                const d = debts.find(x => x.id === did);
-                if (d) d.balance -= amt;
-                localStorage.setItem('debts', JSON.stringify(debts));
-            } else if (type === 'savings_deposit') {
-                const sid = parseInt(acctId.split('_')[1]);
-                const s = savingsAccounts.find(x => x.id === sid);
-                if (s) s.balance += amt;
-                localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
-            }
-
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-            closeAddTransaction();
+            localStorage.setItem('debts', JSON.stringify(debts));
+            closeModal('addDebtModal');
+            document.querySelector('#addDebtModal form').reset();
+            updateDebtSelect();
             renderAll();
-            initChart();
         }
 
-        function deleteTransaction(i) {
-            if (confirm('Delete this transaction?')) {
-                const trans = transactions[i];
-                if (trans.type === 'debt_payment') {
-                    const did = parseInt(trans.account.split('_')[1]);
-                    const d = debts.find(x => x.id === did);
-                    if (d) d.balance += trans.amount;
-                    localStorage.setItem('debts', JSON.stringify(debts));
-                } else if (trans.type === 'savings_deposit') {
-                    const sid = parseInt(trans.account.split('_')[1]);
-                    const s = savingsAccounts.find(x => x.id === sid);
-                    if (s) s.balance -= trans.amount;
-                    localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
-                }
-                transactions.splice(i, 1);
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                renderAll();
-                initChart();
-            }
-        }
+        /**
+         * Add a payment for a debt
+         */
+        function addPayment(event) {
+            event.preventDefault();
 
-        function applyRecurringTransactions() {
-            const today = new Date();
-            recurring.forEach(rec => {
-                const exists = transactions.some(t =>
-                    t.date.endsWith('-' + String(rec.date).padStart(2, '0')) &&
-                    t.description === rec.description &&
-                    t.type === rec.type &&
-                    t.account === rec.account
-                );
-                if (!exists) {
-                    const dateStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(rec.date).padStart(2, '0');
-                    transactions.push({
-                        date: dateStr,
-                        description: rec.description,
-                        type: rec.type,
-                        account: rec.account,
-                        amount: rec.amount,
-                        notes: '(Recurring)'
-                    });
-                    if (rec.type === 'debt_payment') {
-                        const did = parseInt(rec.account.split('_')[1]);
-                        const d = debts.find(x => x.id === did);
-                        if (d) d.balance -= rec.amount;
-                    } else if (rec.type === 'savings_deposit') {
-                        const sid = parseInt(rec.account.split('_')[1]);
-                        const s = savingsAccounts.find(x => x.id === sid);
-                        if (s) s.balance += rec.amount;
-                    }
-                }
-            });
-            if (recurring.length > 0) {
-                localStorage.setItem('transactions', JSON.stringify(transactions));
+            const debtId = parseInt(document.getElementById('payDebt').value);
+            const amount = parseFloat(document.getElementById('payAmount').value);
+            const date = document.getElementById('payDate').value;
+
+            const debt = debts.find(d => d.id === debtId);
+            if (debt) {
+                // Reduce debt balance
+                debt.balance -= amount;
+
+                // Add payment record
+                payments.push({
+                    date: date,
+                    debtId: debtId,
+                    amount: amount,
+                    debtName: debt.name
+                });
+
+                // Save to localStorage
                 localStorage.setItem('debts', JSON.stringify(debts));
-                localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
+                localStorage.setItem('payments', JSON.stringify(payments));
+
+                closeModal('addTransactionModal');
+                document.querySelector('#addTransactionModal form').reset();
+                document.getElementById('payDate').valueAsDate = new Date();
+                renderAll();
             }
         }
 
-        function getAccountName(type, acctId) { const id = parseInt(acctId.split('_')[1]); if (type === 'debt_payment') return debts.find(d => d.id === id)?.name || 'Unknown'; if (type === 'savings_deposit') return savingsAccounts.find(s => s.id === id)?.name || 'Unknown'; if (type === 'expense') return expenseAccounts.find(e => e.id === id)?.name || 'Unknown'; if (type === 'income') return incomeAccounts.find(i => i.id === id)?.name || 'Unknown'; return 'Unknown'; }
+        /**
+         * Update debt dropdown in transaction modal
+         */
+        function updateDebtSelect() {
+            const select = document.getElementById('payDebt');
+            select.innerHTML = '<option value="">Select Debt</option>';
 
-        function renderAll() {
-            const td = debts.reduce((s, d) => s + d.balance, 0);
-            const ts = savingsAccounts.reduce((s, s2) => s + s2.balance, 0);
-            const tm = new Date();
-            const tmt = transactions.filter(t => { const td = new Date(t.date); return td.getMonth() === tm.getMonth(); });
-            const spent = Math.abs(tmt.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0));
-            const nw = ts - td;
-
-            document.getElementById('totalDebt').textContent = 'R' + (td / 1000000).toFixed(2) + 'M';
-            document.getElementById('totalSavings').textContent = 'R' + ts.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
-            document.getElementById('netWorth').textContent = (nw < 0 ? '-' : '') + 'R' + Math.abs(nw / 1000000).toFixed(2) + 'M';
-            document.getElementById('thisMonthSpent').textContent = 'R' + spent.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
-
-            const recent = transactions.slice(-5).reverse();
-            document.getElementById('recentTransactions').innerHTML = recent.length === 0 ? '<div class="empty-state">No transactions yet</div>' : `<table><tbody>${recent.map(t => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}${t.notes ? ' <span class="recurring-badge">' + t.notes + '</span>' : ''}</td><td>${t.type}</td><td>${getAccountName(t.type, t.account)}</td><td class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</td></tr>`).join('')}</tbody></table>`;
-
-            document.getElementById('debtsList').innerHTML = debts.map(d => { const m = Math.max(1, Math.ceil(d.balance / d.payment)); return `<div class="account-card"><div class="account-header"><div><div class="account-name">${d.name}</div><div class="account-type">${d.rate}% APR</div></div><div class="account-balance">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div class="account-info"><div><div class="account-stat-label">Payment</div><div class="account-stat-value">R${d.payment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div><div class="account-stat-label">Months</div><div class="account-stat-value">${m}</div></div></div><div style="display: flex; gap: 8px; margin-top: 16px;"><button class="btn btn-sm btn-danger" onclick="deleteDebt(${d.id})" style="flex: 1;">Delete</button></div></div>`; }).join('') || '<div class="empty-state">No debts added yet</div>';
-
-            const payoffHTML = debts.map(d => {
-                const monthsToPayoff = Math.ceil(d.balance / d.payment);
-                const payoffDate = new Date();
-                payoffDate.setMonth(payoffDate.getMonth() + monthsToPayoff);
-                const totalInterest = (d.payment * monthsToPayoff) - d.balance;
-                return `<div class="payoff-item"><div class="payoff-header"><div class="payoff-name">${d.name}</div><div class="payoff-date">${payoffDate.toLocaleDateString('en-ZA', { year: 'numeric', month: 'short' })}</div></div><div class="payoff-status"><div class="payoff-stat"><div class="payoff-stat-label">Balance</div><div class="payoff-stat-value">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div class="payoff-stat"><div class="payoff-stat-label">Months Left</div><div class="payoff-stat-value">${monthsToPayoff}</div></div><div class="payoff-stat"><div class="payoff-stat-label">Interest (Est)</div><div class="payoff-stat-value">R${totalInterest.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div></div></div>`;
-            }).join('');
-            document.getElementById('payoffTimeline').innerHTML = payoffHTML || '<div class="empty-state">No debts to track</div>';
-
-            document.getElementById('savingsList').innerHTML = savingsAccounts.map(s => { const p = (s.balance / s.target) * 100; return `<div class="account-card"><div class="account-header"><div><div class="account-name">${s.name}</div><div class="account-type">${s.rate}% APR</div></div><div class="account-balance positive">R${s.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div class="account-info"><div><div class="account-stat-label">Target</div><div class="account-stat-value">R${s.target.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div><div class="account-stat-label">Progress</div><div class="account-stat-value">${p.toFixed(0)}%</div></div></div><div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(p, 100)}%;"></div></div><div style="display: flex; gap: 8px; margin-top: 16px;"><button class="btn btn-sm btn-danger" onclick="deleteSavings(${s.id})" style="flex: 1;">Delete</button></div></div>`; }).join('') || '<div class="empty-state">No savings accounts</div>';
-
-            document.getElementById('expensesList').innerHTML = expenseAccounts.map(e => `<div class="account-card"><div class="account-header"><div class="account-name">${e.name}</div></div><div style="display: flex; gap: 8px; margin-top: 12px;"><button class="btn btn-sm btn-danger" onclick="deleteExpense(${e.id})" style="flex: 1;">Delete</button></div></div>`).join('') || '<div class="empty-state">No expense accounts</div>';
-
-            document.getElementById('incomeList').innerHTML = incomeAccounts.map(i => `<div class="account-card"><div class="account-header"><div class="account-name">${i.name}</div></div><div style="display: flex; gap: 8px; margin-top: 12px;"><button class="btn btn-sm btn-danger" onclick="deleteIncome(${i.id})" style="flex: 1;">Delete</button></div></div>`).join('') || '<div class="empty-state">No income accounts</div>';
-
-            document.getElementById('transactionsList').innerHTML = transactions.length === 0 ? '<tr><td colspan="6"><div class="empty-state">No transactions</div></td></tr>' : transactions.map((t, i) => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}${t.notes ? ' <span class="recurring-badge">' + t.notes + '</span>' : ''}</td><td>${t.type}</td><td>${getAccountName(t.type, t.account)}</td><td class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</td><td><button class="btn btn-sm btn-secondary" onclick="openTransactionModal(${i})">Edit</button> <button class="btn btn-sm btn-danger" onclick="deleteTransaction(${i})">Delete</button></td></tr>`).join('');
-
-            document.getElementById('budgetList').innerHTML = budgets.map(b => { const spent = Math.abs(tmt.filter(t => { const desc = t.description.toLowerCase(); return t.type === 'expense' && desc.includes(b.category.toLowerCase()); }).reduce((s, t) => s + t.amount, 0)); const pct = (spent / b.limit) * 100; return `<div class="budget-card"><div class="budget-header"><div><div class="budget-category">${b.category}</div><div style="font-size: 14px; color: var(--text-secondary);">Limit: R${b.limit.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><button class="btn btn-sm btn-danger" onclick="deleteBudget(${b.id})">Delete</button></div><div style="margin-bottom: 12px;"><div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;"><span>Spent</span><span class="amount ${spent > b.limit ? 'negative' : 'positive'}">R${spent.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(pct, 100)}%; background: linear-gradient(90deg, ${pct > 100 ? '#EF4444' : '#6366F1'}, ${pct > 100 ? '#DC2626' : '#EC4899'});"></div></div><div style="font-size: 12px; color: var(--text-secondary);">${pct.toFixed(0)}% used</div></div></div>`; }).join('') || '<div class="empty-state">No budgets yet</div>';
+            debts.forEach(debt => {
+                select.innerHTML += `<option value="${debt.id}">${debt.name}</option>`;
+            });
         }
 
-        function initChart() {
-            const ctx = document.getElementById('dashboardChart');
-            if (!ctx) return;
-            const tm = new Date();
-            const exp = transactions.filter(t => { const td = new Date(t.date); return td.getMonth() === tm.getMonth() && t.type === 'expense'; }).reduce((s, t) => s + Math.abs(t.amount), 0);
-            const inc = transactions.filter(t => { const td = new Date(t.date); return td.getMonth() === tm.getMonth() && t.type === 'income'; }).reduce((s, t) => s + t.amount, 0);
-            if (window.dashboardChart) window.dashboardChart.destroy();
-            window.dashboardChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Expenses', 'Income'],
-                    datasets: [{
-                        data: [Math.abs(exp) || 1, inc || 1],
-                        backgroundColor: ['#EF4444', '#10B981'],
-                        borderColor: '#FFFFFF',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { color: '#6B7280', font: { weight: 600, size: 13 }, padding: 20 }
-                        }
-                    }
+        /**
+         * Main render function - updates all UI
+         */
+        function renderAll() {
+            updateDebtSelect();
+
+            // === RENDER PAYOFF TIMELINE ===
+            const payoffHTML = debts.map(debt => {
+                const { months, totalInterest, avgPayment } = calculatePayoffSmartly(debt.id);
+                const totalPayments = payments.filter(p => p.debtId === debt.id).length;
+                const totalPaid = payments
+                    .filter(p => p.debtId === debt.id)
+                    .reduce((sum, p) => sum + p.amount, 0);
+
+                // Calculate payoff date
+                let payoffDate = 'N/A';
+                if (months) {
+                    const date = new Date();
+                    date.setMonth(date.getMonth() + months);
+                    payoffDate = date.toLocaleDateString('en-ZA', {
+                        year: 'numeric',
+                        month: 'short'
+                    });
                 }
-            });
+
+                const displayMonths = months ? Math.round(months) : '∞';
+                const isPayingExtra = avgPayment > debt.payment;
+
+                return `
+                    <div class="payoff-item">
+                        <div class="payoff-header">
+                            <div class="payoff-name">${debt.name}</div>
+                            <div class="payoff-date">${payoffDate}</div>
+                        </div>
+
+                        <div class="payoff-status">
+                            <div class="payoff-stat">
+                                <div class="payoff-stat-label">Balance</div>
+                                <div class="payoff-stat-value">
+                                    R${debt.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}
+                                </div>
+                            </div>
+                            <div class="payoff-stat">
+                                <div class="payoff-stat-label">Months Left</div>
+                                <div class="payoff-stat-value">${displayMonths}</div>
+                            </div>
+                            <div class="payoff-stat">
+                                <div class="payoff-stat-label">Avg Payment</div>
+                                <div class="payoff-stat-value">
+                                    R${avgPayment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}
+                                </div>
+                            </div>
+                            <div class="payoff-stat">
+                                <div class="payoff-stat-label">Interest (Est)</div>
+                                <div class="payoff-stat-value">
+                                    R${totalInterest.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}
+                                </div>
+                            </div>
+                        </div>
+
+                        ${isPayingExtra ? `
+                            <div class="savings-badge">
+                                💪 Paying avg R${(avgPayment - debt.payment).toLocaleString('en-ZA', { maximumFractionDigits: 0 })} extra/month - saves time & interest!
+                            </div>
+                        ` : ''}
+
+                        ${totalPaid > 0 ? `
+                            <div class="savings-badge">
+                                ✅ Total paid so far: R${totalPaid.toLocaleString('en-ZA', { maximumFractionDigits: 0 })} (${totalPayments} payments)
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('payoffTimeline').innerHTML = payoffHTML ||
+                '<div class="empty-state">No debts added yet</div>';
+
+            // === RENDER DEBTS LIST ===
+            document.getElementById('debtsList').innerHTML = debts.map(debt => `
+                <div style="
+                    background: white;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin-bottom: 16px;
+                ">
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 12px;
+                    ">
+                        <div>
+                            <div style="font-weight: 700; font-size: 16px;">
+                                ${debt.name}
+                            </div>
+                            <div style="font-size: 12px; color: #9ca3af;">
+                                ${debt.rate}% APR
+                            </div>
+                        </div>
+                        <button class="btn btn-danger"
+                            onclick="deleteDebt(${debt.id})">
+                            Delete
+                        </button>
+                    </div>
+                    <div style="
+                        font-size: 24px;
+                        font-weight: 900;
+                        background: linear-gradient(135deg, #6366f1, #ec4899);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                    ">
+                        R${debt.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}
+                    </div>
+                    <div style="font-size: 12px; color: #9ca3af; margin-top: 8px;">
+                        Monthly: R${debt.payment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}
+                    </div>
+                </div>
+            `).join('');
+
+            // === RENDER TRANSACTIONS ===
+            document.getElementById('transactionsList').innerHTML = payments.length === 0 ?
+                '<tr><td colspan="4"><div class="empty-state">No payments recorded</div></td></tr>' :
+                payments.map((payment, index) => `
+                    <tr>
+                        <td>${new Date(payment.date).toLocaleDateString()}</td>
+                        <td>${payment.debtName}</td>
+                        <td style="font-weight: 700;">
+                            R${payment.amount.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm"
+                                onclick="deletePayment(${index})">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+        }
+
+        /**
+         * Delete a debt
+         */
+        function deleteDebt(debtId) {
+            if (confirm('Delete this debt?')) {
+                debts = debts.filter(d => d.id !== debtId);
+                localStorage.setItem('debts', JSON.stringify(debts));
+                renderAll();
+            }
+        }
+
+        /**
+         * Delete a payment
+         */
+        function deletePayment(index) {
+            if (confirm('Delete this payment?')) {
+                const payment = payments[index];
+                const debt = debts.find(d => d.id === payment.debtId);
+
+                // Restore balance when deleting payment
+                if (debt) {
+                    debt.balance += payment.amount;
+                }
+
+                payments.splice(index, 1);
+                localStorage.setItem('debts', JSON.stringify(debts));
+                localStorage.setItem('payments', JSON.stringify(payments));
+                renderAll();
+            }
         }
     </script>
 </body>
