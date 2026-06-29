@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - Personal Finances, Simplified</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4C63ED;
+            --primary-dark: #3f51d6;
+            --secondary: #8B92F1;
+            --bg: #F8F9FB;
+            --surface: #FFFFFF;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 64px;
+            width: 240px;
+            height: calc(100vh - 64px);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            overflow-y: auto;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-menu-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-menu-item:hover {
+            background: var(--bg);
+            color: var(--primary);
+        }
+
+        .nav-menu-item.active {
+            background: rgba(76, 99, 237, 0.1);
+            color: var(--primary);
+        }
+
+        .main {
+            margin-left: 240px;
+            padding: 32px;
+            min-height: calc(100vh - 64px);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 99, 237, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 16px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: var(--bg);
+        }
+
+        .amount {
+            font-weight: 600;
+        }
+
+        .amount.positive {
+            color: var(--success);
+        }
+
+        .amount.negative {
+            color: var(--danger);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .badge-info {
+            background: rgba(76, 99, 237, 0.1);
+            color: var(--primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 24px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            padding: 32px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left-color: var(--success);
+            color: var(--success);
+        }
+
+        .alert-info {
+            background: rgba(76, 99, 237, 0.1);
+            border-left-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .debt-item {
+            padding: 16px;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .debt-item strong {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">💰 FinWise</div>
+        <ul class="nav-links">
+            <li><a onclick="switchPage('dashboard');" class="active">Dashboard</a></li>
+            <li><a onclick="switchPage('accounts');">Accounts</a></li>
+            <li><a onclick="switchPage('transactions');">Transactions</a></li>
+            <li><a onclick="switchPage('debt-tracker');">Debt Tracker</a></li>
+            <li><a onclick="switchPage('budget');">Budget</a></li>
+            <li><a onclick="switchPage('insights');">Insights</a></li>
+        </ul>
+    </div>
+
+    <div class="sidebar">
+        <ul class="nav-menu">
+            <li class="nav-menu-item active" onclick="switchPage('dashboard')">📊 Dashboard</li>
+            <li class="nav-menu-item" onclick="switchPage('accounts')">🏦 Accounts</li>
+            <li class="nav-menu-item" onclick="switchPage('transactions')">💸 Transactions</li>
+            <li class="nav-menu-item" onclick="switchPage('debt-tracker')">📉 Debt Tracker</li>
+            <li class="nav-menu-item" onclick="switchPage('budget')">📊 Budget</li>
+            <li class="nav-menu-item" onclick="switchPage('insights')">💡 Insights</li>
+        </ul>
+    </div>
+
+    <div class="main">
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page active">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+            </div>
+
+            <div id="alerts"></div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Net Worth</div>
+                    <div class="stat-value" id="netWorth">-R1.17M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Debt</div>
+                    <div class="stat-value" id="totalDebt">R1.18M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Savings</div>
+                    <div class="stat-value" id="totalSavings">R2,500</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">This Month Saved</div>
+                    <div class="stat-value" id="monthSaved">R0</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Debt & Savings Progress</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="debtSavingsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Recent Transactions</h2>
+                </div>
+                <div id="recentTransactions"></div>
+            </div>
+        </div>
+
+        <!-- Accounts Page -->
+        <div id="accounts" class="page">
+            <div class="page-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1 class="page-title">Accounts</h1>
+                    <button class="btn btn-primary" onclick="openModal('addAccountModal')">+ Add Account</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Assets</div>
+                    <div class="stat-value" id="totalAssets">R2,500</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Liabilities</div>
+                    <div class="stat-value" id="totalLiabilities">R1.18M</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>All Accounts</h2>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Account Name</th>
+                            <th>Type</th>
+                            <th>Balance</th>
+                            <th>Rate</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountsList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Transactions Page -->
+        <div id="transactions" class="page">
+            <div class="page-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1 class="page-title">Transactions</h1>
+                    <button class="btn btn-primary" onclick="openModal('addTransactionModal')">+ Add Transaction</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>All Transactions</h2>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Impact</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Debt Tracker Page -->
+        <div id="debt-tracker" class="page">
+            <div class="page-header">
+                <h1 class="page-title">Debt Tracker</h1>
+                <p style="color: var(--text-secondary);">Track your debt reduction progress</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Debt Accounts Overview</h2>
+                </div>
+                <div id="debtOverview"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Savings Accounts Overview</h2>
+                </div>
+                <div id="savingsOverview"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Debt Reduction History</h2>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Loan</th>
+                            <th>Payment</th>
+                            <th>New Balance</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody id="debtHistory"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Budget Page -->
+        <div id="budget" class="page">
+            <div class="page-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1 class="page-title">Budget</h1>
+                    <button class="btn btn-primary" onclick="openModal('addBudgetModal')">+ Set Budget</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Monthly Budget</h2>
+                </div>
+                <div id="budgetList"></div>
+            </div>
+        </div>
+
+        <!-- Insights Page -->
+        <div id="insights" class="page">
+            <div class="page-header">
+                <h1 class="page-title">Financial Insights</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Key Metrics</h2>
+                </div>
+                <div id="insightsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div id="addTransactionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Add Transaction</div>
+            <form onsubmit="addTransaction(event)">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="transDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="transDesc" placeholder="e.g., Grocery shopping" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="transCategory" required>
+                        <option value="Food">🍔 Food</option>
+                        <option value="Transport">🚗 Transport</option>
+                        <option value="Utilities">⚡ Utilities</option>
+                        <option value="Debt">💳 Debt Payment</option>
+                        <option value="Savings">💰 Savings</option>
+                        <option value="Income">💵 Income</option>
+                        <option value="Other">📁 Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount (R)</label>
+                    <input type="number" id="transAmount" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Debt/Savings Account (if applicable)</label>
+                    <select id="transAccount">
+                        <option value="">None</option>
+                        <option value="Tymebank Personal">Tymebank Personal (Debt)</option>
+                        <option value="Nedbank Personal">Nedbank Personal (Debt)</option>
+                        <option value="Car Finance">Car Finance (Debt)</option>
+                        <option value="House Bond">House Bond (Debt)</option>
+                        <option value="Emergency Fund">Emergency Fund (Savings)</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addTransactionModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Transaction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Account Modal -->
+    <div id="addAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Add Account</div>
+            <form onsubmit="addAccount(event)">
+                <div class="form-group">
+                    <label>Account Name</label>
+                    <input type="text" id="accName" placeholder="e.g., FNB Savings" required>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="accType" required>
+                        <option value="Savings">Savings</option>
+                        <option value="Loan">Loan</option>
+                        <option value="Credit Card">Credit Card</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Balance (R)</label>
+                    <input type="number" id="accBalance" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" id="accRate" step="0.01" placeholder="0.00">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addAccountModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Budget Modal -->
+    <div id="addBudgetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Set Budget</div>
+            <form onsubmit="addBudget(event)">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="budgetCategory" required>
+                        <option value="Food">🍔 Food</option>
+                        <option value="Transport">🚗 Transport</option>
+                        <option value="Utilities">⚡ Utilities</option>
+                        <option value="Discretionary">🛍️ Discretionary</option>
+                        <option value="Other">📁 Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Monthly Limit (R)</label>
+                    <input type="number" id="budgetLimit" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addBudgetModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Set Budget</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        let accounts = JSON.parse(localStorage.getItem('accounts')) || [
+            { id: 1, name: 'Tymebank Personal', type: 'Loan', balance: -20259, rate: 26.25, original: 23154 },
+            { id: 2, name: 'Nedbank Personal', type: 'Loan', balance: -51657, rate: 15.25, original: 54000 },
+            { id: 3, name: 'Car Finance', type: 'Loan', balance: -69517, rate: 12.40, original: 88000 },
+            { id: 4, name: 'House Bond', type: 'Loan', balance: -1036899, rate: 9.95, original: 1036899 },
+            { id: 5, name: 'Emergency Fund', type: 'Savings', balance: 2500, rate: 0, original: 2500 }
+        ];
+        let budgets = JSON.parse(localStorage.getItem('budgets')) || [
+            { category: 'Food', limit: 2500, spent: 0 },
+            { category: 'Transport', limit: 3000, spent: 0 },
+            { category: 'Utilities', limit: 4211, spent: 0 }
+        ];
+
+        // Initialize
+        document.getElementById('transDate').valueAsDate = new Date();
+        renderAll();
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-menu-item, .nav-links a').forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (pageId === 'dashboard') initCharts();
+            renderAll();
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function addTransaction(e) {
+            e.preventDefault();
+            const date = document.getElementById('transDate').value;
+            const desc = document.getElementById('transDesc').value;
+            const category = document.getElementById('transCategory').value;
+            const amount = parseFloat(document.getElementById('transAmount').value);
+            const accountName = document.getElementById('transAccount').value;
+
+            const isDebtPayment = category === 'Debt' || (accountName && ['Tymebank Personal', 'Nedbank Personal', 'Car Finance', 'House Bond'].includes(accountName));
+            const isSavings = category === 'Savings' || accountName === 'Emergency Fund';
+
+            let impact = 'neutral';
+            if (isDebtPayment) {
+                impact = 'debt-reduction';
+                // Reduce debt
+                if (accountName) {
+                    const account = accounts.find(a => a.name === accountName);
+                    if (account) {
+                        account.balance += amount; // Make negative number less negative
+                    }
+                }
+            } else if (isSavings) {
+                impact = 'savings-increase';
+                // Increase savings
+                if (accountName) {
+                    const account = accounts.find(a => a.name === accountName);
+                    if (account) {
+                        account.balance += amount;
+                    }
+                }
+            }
+
+            transactions.push({
+                date,
+                description: desc,
+                category,
+                amount: category === 'Income' ? amount : -amount,
+                type: category === 'Income' ? 'income' : 'expense',
+                accountName,
+                impact
+            });
+
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            
+            closeModal('addTransactionModal');
+            document.querySelector('#addTransactionModal form').reset();
+            document.getElementById('transDate').valueAsDate = new Date();
+            renderAll();
+            showAlert(`Transaction added! ${impact === 'debt-reduction' ? '📉 Debt reduced' : impact === 'savings-increase' ? '📈 Savings increased' : 'Transaction recorded'}`, impact === 'neutral' ? 'info' : 'success');
+        }
+
+        function addAccount(e) {
+            e.preventDefault();
+            const name = document.getElementById('accName').value;
+            const type = document.getElementById('accType').value;
+            const balance = parseFloat(document.getElementById('accBalance').value);
+            const rate = parseFloat(document.getElementById('accRate').value) || 0;
+
+            accounts.push({
+                id: Date.now(),
+                name,
+                type,
+                balance: type === 'Loan' ? -balance : balance,
+                rate,
+                original: Math.abs(balance)
+            });
+
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            closeModal('addAccountModal');
+            document.querySelector('#addAccountModal form').reset();
+            renderAll();
+        }
+
+        function addBudget(e) {
+            e.preventDefault();
+            const category = document.getElementById('budgetCategory').value;
+            const limit = parseFloat(document.getElementById('budgetLimit').value);
+
+            const existing = budgets.find(b => b.category === category);
+            if (existing) {
+                existing.limit = limit;
+            } else {
+                budgets.push({ category, limit, spent: 0 });
+            }
+
+            localStorage.setItem('budgets', JSON.stringify(budgets));
+            closeModal('addBudgetModal');
+            document.querySelector('#addBudgetModal form').reset();
+            renderAll();
+        }
+
+        function deleteTransaction(index) {
+            if (confirm('Delete this transaction?')) {
+                transactions.splice(index, 1);
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+                renderAll();
+            }
+        }
+
+        function deleteAccount(id) {
+            if (confirm('Delete this account?')) {
+                accounts = accounts.filter(a => a.id !== id);
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+                renderAll();
+            }
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = message;
+            document.getElementById('alerts').appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+
+        function renderAll() {
+            renderDashboard();
+            renderAccounts();
+            renderTransactions();
+            renderDebtTracker();
+            renderBudgets();
+            renderInsights();
+        }
+
+        function renderDashboard() {
+            const income = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            const monthSaved = transactions
+                .filter(t => {
+                    const tDate = new Date(t.date);
+                    const today = new Date();
+                    return tDate.getMonth() === today.getMonth() && tDate.getFullYear() === today.getFullYear() && t.impact === 'savings-increase';
+                })
+                .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+            const assets = accounts.filter(a => a.balance > 0).reduce((sum, a) => sum + a.balance, 0);
+            const liabilities = Math.abs(accounts.filter(a => a.balance < 0).reduce((sum, a) => sum + a.balance, 0));
+            const netWorth = assets - liabilities;
+
+            document.getElementById('netWorth').textContent = 'R' + (netWorth / 1000000).toFixed(2) + 'M';
+            document.getElementById('totalDebt').textContent = 'R' + (liabilities / 1000000).toFixed(2) + 'M';
+            document.getElementById('totalSavings').textContent = 'R' + assets.toLocaleString('en-ZA', {maximumFractionDigits: 0});
+            document.getElementById('monthSaved').textContent = 'R' + monthSaved.toLocaleString('en-ZA', {maximumFractionDigits: 0});
+
+            const recent = transactions.slice(-5).reverse();
+            document.getElementById('recentTransactions').innerHTML = recent.length === 0 
+                ? '<div class="empty-state">No transactions yet</div>'
+                : `<table>
+                    <thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th>Impact</th></tr></thead>
+                    <tbody>
+                    ${recent.map(t => `
+                        <tr>
+                            <td>${new Date(t.date).toLocaleDateString()}</td>
+                            <td>${t.description}</td>
+                            <td><span class="badge badge-${t.type === 'income' ? 'success' : 'danger'}">${t.category}</span></td>
+                            <td><span class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', {maximumFractionDigits: 2})}</span></td>
+                            <td><span class="badge badge-${t.impact === 'debt-reduction' ? 'success' : t.impact === 'savings-increase' ? 'success' : 'info'}">
+                                ${t.impact === 'debt-reduction' ? '📉 Debt ↓' : t.impact === 'savings-increase' ? '📈 Savings ↑' : '📌 Neutral'}
+                            </span></td>
+                        </tr>
+                    `).join('')}
+                    </tbody>
+                </table>`;
+        }
+
+        function renderAccounts() {
+            const assets = accounts.filter(a => a.balance > 0).reduce((sum, a) => sum + a.balance, 0);
+            const liabilities = Math.abs(accounts.filter(a => a.balance < 0).reduce((sum, a) => sum + a.balance, 0));
+
+            document.getElementById('totalAssets').textContent = 'R' + assets.toLocaleString('en-ZA', {maximumFractionDigits: 0});
+            document.getElementById('totalLiabilities').textContent = 'R' + (liabilities / 1000000).toFixed(2) + 'M';
+
+            document.getElementById('accountsList').innerHTML = accounts.map(acc => {
+                const progress = acc.original ? ((Math.abs(acc.balance) / acc.original) * 100).toFixed(1) : 0;
+                return `
+                <tr>
+                    <td><strong>${acc.name}</strong></td>
+                    <td>${acc.type}</td>
+                    <td><span class="amount ${acc.balance >= 0 ? 'positive' : 'negative'}">R${Math.abs(acc.balance).toLocaleString('en-ZA', {maximumFractionDigits: 0})}</span></td>
+                    <td>${acc.rate}%</td>
+                    <td><button class="btn btn-danger" onclick="deleteAccount(${acc.id})">Delete</button></td>
+                </tr>
+            `}).join('');
+        }
+
+        function renderTransactions() {
+            document.getElementById('transactionsList').innerHTML = transactions.length === 0
+                ? '<tr><td colspan="6" class="empty-state">No transactions</td></tr>'
+                : transactions.map((t, i) => `
+                    <tr>
+                        <td>${new Date(t.date).toLocaleDateString()}</td>
+                        <td>${t.description}</td>
+                        <td><span class="badge badge-${t.type === 'income' ? 'success' : 'danger'}">${t.category}</span></td>
+                        <td><span class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', {maximumFractionDigits: 2})}</span></td>
+                        <td>
+                            <span class="badge badge-${t.impact === 'debt-reduction' ? 'success' : t.impact === 'savings-increase' ? 'success' : 'info'}">
+                                ${t.impact === 'debt-reduction' ? '📉 Debt ↓' : t.impact === 'savings-increase' ? '📈 Savings ↑' : '📌 Neutral'}
+                            </span>
+                        </td>
+                        <td><button class="btn btn-danger" onclick="deleteTransaction(${i})">Delete</button></td>
+                    </tr>
+                `).join('');
+        }
+
+        function renderDebtTracker() {
+            // Debt overview
+            const debtAccounts = accounts.filter(a => a.type === 'Loan');
+            const debtHTML = debtAccounts.map(acc => {
+                const paid = acc.original + acc.balance; // Original is positive, balance is negative
+                const progress = (paid / acc.original) * 100;
+                return `
+                <div class="debt-item">
+                    <strong>
+                        <span>${acc.name}</span>
+                        <span>${progress.toFixed(1)}% Paid</span>
+                    </strong>
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                        Original: R${acc.original.toLocaleString('en-ZA', {maximumFractionDigits: 0})} | 
+                        Remaining: R${Math.abs(acc.balance).toLocaleString('en-ZA', {maximumFractionDigits: 0})} |
+                        Paid: R${paid.toLocaleString('en-ZA', {maximumFractionDigits: 0})}
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${Math.min(progress, 100)}%"></div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('debtOverview').innerHTML = debtHTML || '<div class="empty-state">No debt accounts</div>';
+
+            // Savings overview
+            const savingsAccounts = accounts.filter(a => a.type === 'Savings');
+            const savingsHTML = savingsAccounts.map(acc => {
+                const goal = acc.original; // For emergency fund, treat original as goal
+                const progress = (acc.balance / goal) * 100;
+                return `
+                <div class="debt-item">
+                    <strong>
+                        <span>${acc.name}</span>
+                        <span>${progress.toFixed(1)}% of Goal</span>
+                    </strong>
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                        Goal: R${goal.toLocaleString('en-ZA', {maximumFractionDigits: 0})} | 
+                        Current: R${acc.balance.toLocaleString('en-ZA', {maximumFractionDigits: 0})} |
+                        Need: R${(goal - acc.balance).toLocaleString('en-ZA', {maximumFractionDigits: 0})}
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${Math.min(progress, 100)}%; background: var(--success);"></div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('savingsOverview').innerHTML = savingsHTML || '<div class="empty-state">No savings accounts</div>';
+
+            // Debt history
+            const debtTransactions = transactions.filter(t => t.impact === 'debt-reduction').sort((a, b) => new Date(b.date) - new Date(a.date));
+            document.getElementById('debtHistory').innerHTML = debtTransactions.length === 0
+                ? '<tr><td colspan="5" class="empty-state">No debt payments recorded</td></tr>'
+                : debtTransactions.map(t => {
+                    const account = accounts.find(a => a.name === t.accountName);
+                    const remaining = account ? Math.abs(account.balance) : 0;
+                    const paid = account ? (account.original + account.balance) : 0;
+                    const progress = account ? ((paid / account.original) * 100).toFixed(1) : 0;
+                    return `
+                        <tr>
+                            <td>${new Date(t.date).toLocaleDateString()}</td>
+                            <td>${t.accountName || t.description}</td>
+                            <td><span class="amount positive">-R${Math.abs(t.amount).toLocaleString('en-ZA', {maximumFractionDigits: 2})}</span></td>
+                            <td>R${remaining.toLocaleString('en-ZA', {maximumFractionDigits: 0})}</td>
+                            <td>${progress}% paid</td>
+                        </tr>
+                    `;
+                }).join('');
+        }
+
+        function renderBudgets() {
+            const budgetHTML = budgets.map(b => {
+                const spent = Math.abs(transactions.filter(t => t.category === b.category && t.type === 'expense').reduce((sum, t) => sum + t.amount, 0));
+                const pct = (spent / b.limit) * 100;
+                return `
+                    <div style="margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <strong>${b.category}</strong>
+                            <span>R${spent.toLocaleString('en-ZA', {maximumFractionDigits: 0})} / R${b.limit.toLocaleString('en-ZA', {maximumFractionDigits: 0})}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${Math.min(pct, 100)}%; background: ${pct > 100 ? 'var(--danger)' : 'var(--primary)'}"></div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${pct.toFixed(0)}% used</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('budgetList').innerHTML = budgetHTML || '<div class="empty-state">No budgets set</div>';
+        }
+
+        function renderInsights() {
+            const income = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            const expenses = Math.abs(transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0));
+            const savings = income - expenses;
+            const savingsRate = income > 0 ? ((savings / income) * 100).toFixed(1) : 0;
+
+            const debtPaid = transactions.filter(t => t.impact === 'debt-reduction').reduce((sum, t) => sum + Math.abs(t.amount), 0);
+            const savingsAdded = transactions.filter(t => t.impact === 'savings-increase').reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+            const liabilities = Math.abs(accounts.filter(a => a.balance < 0).reduce((sum, a) => sum + a.balance, 0));
+
+            document.getElementById('insightsList').innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;">
+                    <div>
+                        <div style="color: var(--text-secondary); font-size: 12px; margin-bottom: 8px;">SAVINGS RATE</div>
+                        <div style="font-size: 28px; font-weight: 700; color: ${savings >= 0 ? 'var(--success)' : 'var(--danger)'};">${savingsRate}%</div>
+                    </div>
+                    <div>
+                        <div style="color: var(--text-secondary); font-size: 12px; margin-bottom: 8px;">DEBT PAID THIS MONTH</div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--success);">R${debtPaid.toLocaleString('en-ZA', {maximumFractionDigits: 0})}</div>
+                    </div>
+                    <div>
+                        <div style="color: var(--text-secondary); font-size: 12px; margin-bottom: 8px;">SAVINGS ADDED</div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--success);">R${savingsAdded.toLocaleString('en-ZA', {maximumFractionDigits: 0})}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initCharts() {
+            const debtAccounts = accounts.filter(a => a.type === 'Loan');
+            const totalDebt = Math.abs(debtAccounts.reduce((sum, a) => sum + a.balance, 0));
+            const savingsAccounts = accounts.filter(a => a.type === 'Savings');
+            const totalSavings = savingsAccounts.reduce((sum, a) => sum + a.balance, 0);
+
+            const ctx = document.getElementById('debtSavingsChart');
+            if (ctx && ctx.chart) ctx.chart.destroy();
+            
+            ctx.chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Debt', 'Savings'],
+                    datasets: [{
+                        label: 'Amount (R)',
+                        data: [totalDebt, totalSavings],
+                        backgroundColor: ['var(--danger)', 'var(--success)'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.remove('active');
+            });
+        });
+
+        // Initialize charts
+        setTimeout(() => initCharts(), 500);
+    </script>
+</body>
+</html>
