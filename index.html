@@ -243,99 +243,71 @@
             margin: 0;
         }
 
-        /* MONTH SELECTOR */
-        .month-selector {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 32px;
-            padding: 16px;
-            background: var(--surface);
+        /* ACCOUNT CARD */
+        .account-card {
+            padding: 20px;
+            background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 12px;
-        }
-
-        .month-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
+            margin-bottom: 16px;
             transition: all 0.3s;
         }
 
-        .month-btn:hover {
-            background: var(--primary-dark);
+        .account-card:hover {
+            border-color: var(--primary);
             transform: translateY(-2px);
         }
 
-        .month-display {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--text-primary);
-            min-width: 200px;
-            text-align: center;
-        }
-
-        /* MONTH TO MONTH VIEW */
-        .month-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .month-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-
-        .month-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
-        }
-
-        .month-card-title {
-            font-size: 16px;
-            font-weight: 800;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 12px;
-        }
-
-        .month-stat {
+        .account-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
+            align-items: flex-start;
+            margin-bottom: 16px;
         }
 
-        .month-stat-label {
-            color: var(--text-secondary);
-        }
-
-        .month-stat-value {
+        .account-name {
+            font-size: 18px;
             font-weight: 800;
-            color: var(--primary);
         }
 
-        .month-stat-value.negative {
+        .account-type {
+            font-size: 12px;
+            color: var(--warning);
+            background: rgba(245, 158, 11, 0.1);
+            padding: 4px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .account-balance {
+            font-size: 28px;
+            font-weight: 900;
             color: var(--danger);
         }
 
-        /* TREND CHART */
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin-bottom: 24px;
+        .account-balance.positive {
+            color: var(--success);
+        }
+
+        .account-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+        }
+
+        .account-stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .account-stat-value {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--primary);
         }
 
         /* BUTTONS */
@@ -456,6 +428,13 @@
             border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
+        /* CHART */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 24px;
+        }
+
         /* MODALS */
         .modal {
             display: none;
@@ -533,7 +512,7 @@
             .nav-links { display: none; }
             .stats-grid { grid-template-columns: 1fr; }
             .page-title { font-size: 24px; }
-            .month-grid { grid-template-columns: 1fr; }
+            .account-info { grid-template-columns: 1fr; }
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -550,8 +529,8 @@
         </div>
         <ul class="nav-links">
             <li><a onclick="switchPage('dashboard');" class="active">Dashboard</a></li>
-            <li><a onclick="switchPage('trends');">Trends</a></li>
             <li><a onclick="switchPage('debts');">Debts</a></li>
+            <li><a onclick="switchPage('savings');">Savings</a></li>
             <li><a onclick="switchPage('transactions');">Transactions</a></li>
             <li><a onclick="switchPage('budget');">Budget</a></li>
         </ul>
@@ -561,8 +540,8 @@
     <div class="sidebar">
         <ul class="nav-menu">
             <li class="nav-menu-item active" onclick="switchPage('dashboard')">📊 Dashboard</li>
-            <li class="nav-menu-item" onclick="switchPage('trends')">📈 Trends</li>
             <li class="nav-menu-item" onclick="switchPage('debts')">💳 Debts</li>
+            <li class="nav-menu-item" onclick="switchPage('savings')">💰 Savings</li>
             <li class="nav-menu-item" onclick="switchPage('transactions')">💸 Transactions</li>
             <li class="nav-menu-item" onclick="switchPage('budget')">📊 Budget</li>
         </ul>
@@ -584,7 +563,7 @@
                 <div class="stat-card">
                     <div class="stat-label">💰 Total Savings</div>
                     <div class="stat-value" id="totalSavings">R2,500</div>
-                    <div class="stat-change">Available cash</div>
+                    <div class="stat-change">All savings accounts</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">📈 Net Worth</div>
@@ -594,7 +573,7 @@
                 <div class="stat-card">
                     <div class="stat-label">📊 This Month</div>
                     <div class="stat-value" id="thisMonthSpent">R0</div>
-                    <div class="stat-change" id="thisMonthChange">Total spent</div>
+                    <div class="stat-change" id="thisMonthChange">Total expenses</div>
                 </div>
             </div>
 
@@ -615,45 +594,34 @@
             </div>
         </div>
 
-        <!-- TRENDS - MONTH TO MONTH VIEW -->
-        <div id="trends" class="page">
-            <h1 class="page-title">📈 Monthly Trends</h1>
-            <p class="page-subtitle">Track your spending and savings over time</p>
-
-            <div class="card">
-                <div class="card-header">
-                    <h2>💹 Month-to-Month Overview</h2>
-                </div>
-                <div class="month-selector">
-                    <button class="month-btn" onclick="previousMonthView()">← Previous</button>
-                    <div class="month-display" id="monthDisplay">June 2026</div>
-                    <button class="month-btn" onclick="nextMonthView()">Next →</button>
-                </div>
-
-                <div class="month-grid" id="monthGrid"></div>
-
-                <div class="chart-container">
-                    <canvas id="trendsChart"></canvas>
-                </div>
-            </div>
-        </div>
-
         <!-- DEBTS -->
         <div id="debts" class="page">
             <h1 class="page-title">💳 Debts & Loans</h1>
             <p class="page-subtitle">Manage your debt payoff strategy</p>
 
             <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addDebtModal')">
-                <span>➕</span> Add Debt
+                <span>➕</span> Add Debt Account
             </button>
 
             <div id="debtsList"></div>
         </div>
 
+        <!-- SAVINGS -->
+        <div id="savings" class="page">
+            <h1 class="page-title">💰 Savings Accounts</h1>
+            <p class="page-subtitle">Track your savings and emergency fund</p>
+
+            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addSavingsModal')">
+                <span>➕</span> Add Savings Account
+            </button>
+
+            <div id="savingsList"></div>
+        </div>
+
         <!-- TRANSACTIONS -->
         <div id="transactions" class="page">
             <h1 class="page-title">Transactions</h1>
-            <p class="page-subtitle">Track your income and expenses</p>
+            <p class="page-subtitle">Track all your financial activities</p>
 
             <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addTransactionModal')">
                 <span>➕</span> Add Transaction
@@ -668,8 +636,8 @@
                         <tr>
                             <th>Date</th>
                             <th>Description</th>
-                            <th>Category</th>
                             <th>Type</th>
+                            <th>Account</th>
                             <th>Amount</th>
                             <th>Action</th>
                         </tr>
@@ -682,7 +650,7 @@
         <!-- BUDGET -->
         <div id="budget" class="page">
             <h1 class="page-title">Budget</h1>
-            <p class="page-subtitle">Monitor your spending limits</p>
+            <p class="page-subtitle">Monitor your monthly spending</p>
 
             <div class="card">
                 <div class="card-header">
@@ -696,11 +664,11 @@
     <!-- MODALS -->
     <div id="addDebtModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">💳 Add Debt</div>
+            <div class="modal-header">💳 Add Debt Account</div>
             <form onsubmit="addDebt(event)">
                 <div class="form-group">
-                    <label>Lender Name</label>
-                    <input type="text" id="debtLender" placeholder="e.g., Tymebank" required>
+                    <label>Account Name</label>
+                    <input type="text" id="debtName" placeholder="e.g., Nedbank Personal" required>
                 </div>
                 <div class="form-group">
                     <label>Balance (R)</label>
@@ -722,6 +690,34 @@
         </div>
     </div>
 
+    <div id="addSavingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">💰 Add Savings Account</div>
+            <form onsubmit="addSavings(event)">
+                <div class="form-group">
+                    <label>Account Name</label>
+                    <input type="text" id="savingsName" placeholder="e.g., Emergency Fund" required>
+                </div>
+                <div class="form-group">
+                    <label>Current Balance (R)</label>
+                    <input type="number" id="savingsBalance" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Target Amount (R)</label>
+                    <input type="number" id="savingsTarget" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" id="savingsRate" step="0.01" value="4.0">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addSavingsModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="addTransactionModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">➕ Add Transaction</div>
@@ -735,16 +731,19 @@
                     <input type="text" id="transDesc" placeholder="e.g., Grocery shopping" required>
                 </div>
                 <div class="form-group">
-                    <label>Category</label>
-                    <select id="transCategory" required></select>
+                    <label>Type</label>
+                    <select id="transType" onchange="updateAccountSelect()" required>
+                        <option value="">-- Select Type --</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                        <option value="debt_payment">Debt Payment</option>
+                        <option value="savings_deposit">Savings Deposit</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label>Type</label>
-                    <select id="transType" required>
-                        <option value="expense">Expense</option>
-                        <option value="income">Income</option>
-                        <option value="debt_payment">Debt Payment</option>
-                        <option value="savings">Savings</option>
+                    <label>Account</label>
+                    <select id="transAccount" required>
+                        <option value="">-- Select Account --</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -761,32 +760,24 @@
 
     <script>
         // DATA
-        let currentMonthView = new Date();
         let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         let debts = JSON.parse(localStorage.getItem('debts')) || [
-            { id: 1, lender: 'Tymebank Personal', balance: 20259, rate: 26.25, payment: 2200 },
-            { id: 2, lender: 'Nedbank Personal', balance: 51657, rate: 15.25, payment: 2246 },
-            { id: 3, lender: 'Car Finance', balance: 69517, rate: 12.40, payment: 8695 },
-            { id: 4, lender: 'House Bond', balance: 1036899, rate: 9.95, payment: 11499 }
+            { id: 1, name: 'Tymebank Personal', balance: 20259, rate: 26.25, payment: 2200 },
+            { id: 2, name: 'Nedbank Personal', balance: 51657, rate: 15.25, payment: 2246 },
+            { id: 3, name: 'Car Finance', balance: 69517, rate: 12.40, payment: 8695 },
+            { id: 4, name: 'House Bond', balance: 1036899, rate: 9.95, payment: 11499 }
         ];
-        let savings = JSON.parse(localStorage.getItem('savings')) || 2500;
+        let savingsAccounts = JSON.parse(localStorage.getItem('savingsAccounts')) || [
+            { id: 1, name: 'Emergency Fund', balance: 2500, target: 39400, rate: 4.0 }
+        ];
         let budgets = JSON.parse(localStorage.getItem('budgets')) || [
             { category: 'Food', limit: 2500 },
             { category: 'Transport', limit: 3000 },
             { category: 'Utilities', limit: 4211 }
         ];
-        let categories = JSON.parse(localStorage.getItem('categories')) || [
-            { id: 1, name: 'Food', type: 'Expense', color: '#F59E0B', icon: '🍔' },
-            { id: 2, name: 'Transport', type: 'Expense', color: '#0284C7', icon: '🚗' },
-            { id: 3, name: 'Utilities', type: 'Expense', color: '#10B981', icon: '⚡' },
-            { id: 4, name: 'Debt', type: 'Expense', color: '#EF4444', icon: '💳' },
-            { id: 5, name: 'Savings', type: 'Expense', color: '#8B5CF6', icon: '💰' },
-            { id: 6, name: 'Income', type: 'Income', color: '#10B981', icon: '💵' }
-        ];
 
         // INIT
         document.getElementById('transDate').valueAsDate = new Date();
-        updateCategorySelects();
         renderAll();
         initChart();
 
@@ -800,9 +791,6 @@
             if (pageId === 'dashboard') {
                 setTimeout(() => initChart(), 100);
             }
-            if (pageId === 'trends') {
-                setTimeout(() => renderTrendsChart(), 100);
-            }
         }
 
         // MODALS
@@ -815,28 +803,21 @@
             });
         });
 
-        // CATEGORIES
-        function updateCategorySelects() {
-            const expenses = categories.filter(c => c.type === 'Expense');
-            document.getElementById('transCategory').innerHTML = expenses.map(c => `<option value="${c.name}">${c.icon} ${c.name}</option>`).join('');
-        }
+        // UPDATE ACCOUNT SELECT BASED ON TYPE
+        function updateAccountSelect() {
+            const type = document.getElementById('transType').value;
+            const select = document.getElementById('transAccount');
+            select.innerHTML = '<option value="">-- Select Account --</option>';
 
-        // CALCULATE BALANCES FROM TRANSACTIONS
-        function calculateBalances() {
-            let currentSavings = 2500;
-            let currentDebts = [20259, 51657, 69517, 1036899];
-
-            transactions.forEach(t => {
-                if (t.type === 'savings') {
-                    currentSavings += parseFloat(t.amount);
-                } else if (t.type === 'debt_payment') {
-                    for (let i = 0; i < currentDebts.length; i++) {
-                        currentDebts[i] -= parseFloat(t.amount) / currentDebts.length;
-                    }
-                }
-            });
-
-            return { savings: Math.max(0, currentSavings), debts: currentDebts };
+            if (type === 'debt_payment') {
+                debts.forEach(d => {
+                    select.innerHTML += `<option value="debt_${d.id}">${d.name}</option>`;
+                });
+            } else if (type === 'savings_deposit') {
+                savingsAccounts.forEach(s => {
+                    select.innerHTML += `<option value="savings_${s.id}">${s.name}</option>`;
+                });
+            }
         }
 
         // DEBTS
@@ -844,7 +825,7 @@
             e.preventDefault();
             debts.push({
                 id: Date.now(),
-                lender: document.getElementById('debtLender').value,
+                name: document.getElementById('debtName').value,
                 balance: parseFloat(document.getElementById('debtBalance').value),
                 rate: parseFloat(document.getElementById('debtRate').value),
                 payment: parseFloat(document.getElementById('debtPayment').value)
@@ -863,19 +844,58 @@
             }
         }
 
+        // SAVINGS
+        function addSavings(e) {
+            e.preventDefault();
+            savingsAccounts.push({
+                id: Date.now(),
+                name: document.getElementById('savingsName').value,
+                balance: parseFloat(document.getElementById('savingsBalance').value),
+                target: parseFloat(document.getElementById('savingsTarget').value),
+                rate: parseFloat(document.getElementById('savingsRate').value)
+            });
+            localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
+            closeModal('addSavingsModal');
+            document.querySelector('#addSavingsModal form').reset();
+            renderAll();
+        }
+
+        function deleteSavings(id) {
+            if (confirm('Delete this savings account?')) {
+                savingsAccounts = savingsAccounts.filter(s => s.id !== id);
+                localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
+                renderAll();
+            }
+        }
+
         // TRANSACTIONS
         function addTransaction(e) {
             e.preventDefault();
             const type = document.getElementById('transType').value;
+            const accountId = document.getElementById('transAccount').value;
             const amount = parseFloat(document.getElementById('transAmount').value);
-            
+
             transactions.push({
                 date: document.getElementById('transDate').value,
                 description: document.getElementById('transDesc').value,
-                category: document.getElementById('transCategory').value,
-                amount: amount,
-                type: type
+                type: type,
+                account: accountId,
+                amount: amount
             });
+
+            // Update balances
+            if (type === 'debt_payment') {
+                const debtId = parseInt(accountId.split('_')[1]);
+                const debt = debts.find(d => d.id === debtId);
+                if (debt) debt.balance -= amount;
+                localStorage.setItem('debts', JSON.stringify(debts));
+            } else if (type === 'savings_deposit') {
+                const savingsId = parseInt(accountId.split('_')[1]);
+                const savings = savingsAccounts.find(s => s.id === savingsId);
+                if (savings) savings.balance += amount;
+                localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
+            }
+
             localStorage.setItem('transactions', JSON.stringify(transactions));
             closeModal('addTransactionModal');
             document.querySelector('#addTransactionModal form').reset();
@@ -893,174 +913,21 @@
             }
         }
 
-        // MONTH VIEW NAVIGATION
-        function previousMonthView() {
-            currentMonthView = new Date(currentMonthView.getFullYear(), currentMonthView.getMonth() - 1);
-            updateMonthDisplay();
-        }
-
-        function nextMonthView() {
-            currentMonthView = new Date(currentMonthView.getFullYear(), currentMonthView.getMonth() + 1);
-            updateMonthDisplay();
-        }
-
-        function updateMonthDisplay() {
-            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'];
-            const month = monthNames[currentMonthView.getMonth()];
-            const year = currentMonthView.getFullYear();
-            document.getElementById('monthDisplay').textContent = `${month} ${year}`;
-            renderMonthGrid();
-            renderTrendsChart();
-        }
-
-        function renderMonthGrid() {
-            const month = currentMonthView.getMonth();
-            const year = currentMonthView.getFullYear();
-            
-            let html = '';
-            for (let i = 0; i < 12; i++) {
-                const checkDate = new Date(year, month + i);
-                const monthTransactions = transactions.filter(t => {
-                    const tDate = new Date(t.date);
-                    return tDate.getMonth() === checkDate.getMonth() && tDate.getFullYear() === checkDate.getFullYear();
-                });
-
-                const income = monthTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-                const expenses = Math.abs(monthTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0));
-                const savings = income - expenses;
-
-                const monthName = new Date(checkDate).toLocaleDateString('en-ZA', { month: 'short', year: '2-digit' });
-
-                html += `
-                    <div class="month-card">
-                        <div class="month-card-title">${monthName}</div>
-                        <div class="month-stat">
-                            <span class="month-stat-label">Income:</span>
-                            <span class="month-stat-value">R${Math.abs(income).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span>
-                        </div>
-                        <div class="month-stat">
-                            <span class="month-stat-label">Expenses:</span>
-                            <span class="month-stat-value negative">-R${expenses.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span>
-                        </div>
-                        <div style="border-top: 1px solid var(--border); margin: 12px 0;"></div>
-                        <div class="month-stat">
-                            <span class="month-stat-label">Net Savings:</span>
-                            <span class="month-stat-value ${savings < 0 ? 'negative' : ''}">${savings < 0 ? '-' : ''}R${Math.abs(savings).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span>
-                        </div>
-                    </div>
-                `;
-            }
-            document.getElementById('monthGrid').innerHTML = html;
-        }
-
-        function renderTrendsChart() {
-            const ctx = document.getElementById('trendsChart');
-            if (!ctx) return;
-
-            const labels = [];
-            const incomeData = [];
-            const expenseData = [];
-
-            for (let i = 11; i >= 0; i--) {
-                const month = new Date(currentMonthView.getFullYear(), currentMonthView.getMonth() - i);
-                const monthTransactions = transactions.filter(t => {
-                    const tDate = new Date(t.date);
-                    return tDate.getMonth() === month.getMonth() && tDate.getFullYear() === month.getFullYear();
-                });
-
-                const income = monthTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-                const expenses = Math.abs(monthTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0));
-
-                labels.push(month.toLocaleDateString('en-ZA', { month: 'short' }));
-                incomeData.push(income);
-                expenseData.push(expenses);
-            }
-
-            if (window.trendsChart) window.trendsChart.destroy();
-
-            window.trendsChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Income',
-                            data: incomeData,
-                            borderColor: '#10B981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        },
-                        {
-                            label: 'Expenses',
-                            data: expenseData,
-                            borderColor: '#EF4444',
-                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: { padding: 20, font: { weight: 700 }, color: '#94A3B8' }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            ticks: { color: '#94A3B8' },
-                            grid: { color: 'rgba(52, 65, 85, 0.2)' }
-                        },
-                        x: {
-                            ticks: { color: '#94A3B8' },
-                            grid: { color: 'rgba(52, 65, 85, 0.2)' }
-                        }
-                    }
-                }
-            });
-        }
-
         // RENDER ALL
         function renderAll() {
-            // Calculate current balances
-            let currentSavings = 2500;
-            let debtAdjustments = [0, 0, 0, 0];
-
-            transactions.forEach(t => {
-                if (t.type === 'savings') {
-                    currentSavings += parseFloat(t.amount);
-                } else if (t.type === 'debt_payment') {
-                    const amount = parseFloat(t.amount) / 4;
-                    for (let i = 0; i < 4; i++) {
-                        debtAdjustments[i] += amount;
-                    }
-                }
-            });
-
-            const currentDebts = [
-                debts[0].balance - debtAdjustments[0],
-                debts[1].balance - debtAdjustments[1],
-                debts[2].balance - debtAdjustments[2],
-                debts[3].balance - debtAdjustments[3]
-            ];
-
-            const totalDebt = currentDebts.reduce((a, b) => a + b, 0);
+            const totalDebt = debts.reduce((sum, d) => sum + d.balance, 0);
+            const totalSavings = savingsAccounts.reduce((sum, s) => sum + s.balance, 0);
             const thisMonth = new Date();
             const thisMonthTransactions = transactions.filter(t => {
                 const tDate = new Date(t.date);
                 return tDate.getMonth() === thisMonth.getMonth();
             });
             const thisMonthSpent = Math.abs(thisMonthTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0));
-            const networth = currentSavings - totalDebt;
+            const networth = totalSavings - totalDebt;
 
             // Update display
             document.getElementById('totalDebt').textContent = 'R' + (totalDebt / 1000000).toFixed(2) + 'M';
-            document.getElementById('totalSavings').textContent = 'R' + currentSavings.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
+            document.getElementById('totalSavings').textContent = 'R' + totalSavings.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
             document.getElementById('netWorth').textContent = (networth < 0 ? '-' : '') + 'R' + Math.abs(networth / 1000000).toFixed(2) + 'M';
             document.getElementById('thisMonthSpent').textContent = 'R' + thisMonthSpent.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
 
@@ -1068,24 +935,39 @@
             const recent = transactions.slice(-5).reverse();
             document.getElementById('recentTransactions').innerHTML = recent.length === 0
                 ? '<div class="empty-state"><p>No transactions yet</p></div>'
-                : `<table><tbody>${recent.map(t => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><span class="badge">${t.category}</span></td><td><strong>${t.type}</strong></td><td><span class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span></td></tr>`).join('')}</tbody></table>`;
+                : `<table><tbody>${recent.map(t => {
+                    let accountName = 'Unknown';
+                    if (t.type === 'debt_payment') {
+                        const debt = debts.find(d => d.id === parseInt(t.account.split('_')[1]));
+                        accountName = debt ? debt.name : 'Unknown Debt';
+                    } else if (t.type === 'savings_deposit') {
+                        const savings = savingsAccounts.find(s => s.id === parseInt(t.account.split('_')[1]));
+                        accountName = savings ? savings.name : 'Unknown Account';
+                    }
+                    return `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><strong>${t.type}</strong></td><td>${accountName}</td><td><span class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span></td></tr>`;
+                }).join('')}</tbody></table>`;
 
-            // Debts list with updated balances
-            const debtsHTML = currentDebts.map((balance, idx) => {
-                const d = debts[idx];
-                const monthsLeft = Math.max(1, Math.ceil(balance / d.payment));
+            // Debts list
+            const debtsHTML = debts.map(d => {
+                const monthsLeft = Math.max(1, Math.ceil(d.balance / d.payment));
                 return `
-                    <div style="padding: 20px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                    <div class="account-card">
+                        <div class="account-header">
                             <div>
-                                <div style="font-size: 18px; font-weight: 800;">${d.lender}</div>
-                                <div style="font-size: 12px; color: var(--warning); background: rgba(245, 158, 11, 0.1); padding: 4px 12px; border-radius: 6px; margin-top: 4px; display: inline-block;">${d.rate}% APR</div>
+                                <div class="account-name">${d.name}</div>
+                                <div class="account-type">${d.rate}% APR</div>
                             </div>
-                            <div style="font-size: 28px; font-weight: 900; color: var(--danger);">R${balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
+                            <div class="account-balance">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; border-top: 1px solid var(--border); padding-top: 16px;">
-                            <div><div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">Monthly Payment</div><div style="font-size: 16px; font-weight: 800; color: var(--primary);">R${d.payment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div>
-                            <div><div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">Months to Payoff</div><div style="font-size: 16px; font-weight: 800; color: var(--primary);">${monthsLeft} months</div></div>
+                        <div class="account-info">
+                            <div>
+                                <div class="account-stat-label">Monthly Payment</div>
+                                <div class="account-stat-value">R${d.payment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
+                            </div>
+                            <div>
+                                <div class="account-stat-label">Months to Payoff</div>
+                                <div class="account-stat-value">${monthsLeft} months</div>
+                            </div>
                         </div>
                         <button class="btn btn-danger" onclick="deleteDebt(${d.id})" style="margin-top: 16px; width: 100%;">Delete</button>
                     </div>
@@ -1093,14 +975,58 @@
             }).join('');
             document.getElementById('debtsList').innerHTML = debtsHTML || '<div class="empty-state"><p>No debts</p></div>';
 
+            // Savings list
+            const savingsHTML = savingsAccounts.map(s => {
+                const pct = (s.balance / s.target) * 100;
+                return `
+                    <div class="account-card">
+                        <div class="account-header">
+                            <div>
+                                <div class="account-name">${s.name}</div>
+                                <div class="account-type">${s.rate}% APR</div>
+                            </div>
+                            <div class="account-balance positive">R${s.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
+                        </div>
+                        <div class="account-info">
+                            <div>
+                                <div class="account-stat-label">Target Amount</div>
+                                <div class="account-stat-value">R${s.target.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
+                            </div>
+                            <div>
+                                <div class="account-stat-label">Progress</div>
+                                <div class="account-stat-value">${pct.toFixed(0)}%</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${Math.min(pct, 100)}%;"></div>
+                        </div>
+                        <button class="btn btn-danger" onclick="deleteSavings(${s.id})" style="margin-top: 16px; width: 100%;">Delete</button>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('savingsList').innerHTML = savingsHTML || '<div class="empty-state"><p>No savings accounts</p></div>';
+
             // All transactions
             document.getElementById('transactionsList').innerHTML = transactions.length === 0
                 ? '<tr><td colspan="6"><div class="empty-state"><p>No transactions</p></div></td></tr>'
-                : transactions.map((t, i) => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><span class="badge">${t.category}</span></td><td><strong>${t.type}</strong></td><td><span class="amount ${t.type === 'income' || t.type === 'savings' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span></td><td><button class="btn btn-danger" onclick="deleteTransaction(${i})">Delete</button></td></tr>`).join('');
+                : transactions.map((t, i) => {
+                    let accountName = 'Unknown';
+                    if (t.type === 'debt_payment') {
+                        const debt = debts.find(d => d.id === parseInt(t.account.split('_')[1]));
+                        accountName = debt ? debt.name : 'Unknown';
+                    } else if (t.type === 'savings_deposit') {
+                        const savings = savingsAccounts.find(s => s.id === parseInt(t.account.split('_')[1]));
+                        accountName = savings ? savings.name : 'Unknown';
+                    }
+                    return `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}</td><td><strong>${t.type}</strong></td><td>${accountName}</td><td><span class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span></td><td><button class="btn btn-danger" onclick="deleteTransaction(${i})">Delete</button></td></tr>`;
+                }).join('');
 
             // Budget
             const budgetHTML = budgets.map(b => {
-                const spent = Math.abs(thisMonthTransactions.filter(t => t.category === b.category).reduce((sum, t) => sum + t.amount, 0));
+                const spent = Math.abs(thisMonthTransactions.filter(t => {
+                    const desc = t.description.toLowerCase();
+                    return t.type === 'expense' && desc.includes(b.category.toLowerCase());
+                }).reduce((sum, t) => sum + t.amount, 0));
                 const pct = (spent / b.limit) * 100;
                 return `
                     <div style="margin-bottom: 28px;">
@@ -1116,9 +1042,6 @@
                 `;
             }).join('');
             document.getElementById('budgetList').innerHTML = budgetHTML || '<div class="empty-state"><p>No budgets</p></div>';
-
-            // Initialize month grid
-            renderMonthGrid();
         }
 
         // CHART
