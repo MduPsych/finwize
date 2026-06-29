@@ -7,20 +7,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
-            --primary: #10B981;
-            --primary-dark: #059669;
-            --secondary: #06B6D4;
-            --danger: #EF4444;
-            --warning: #F59E0B;
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --accent: #EC4899;
             --success: #10B981;
-            --bg: #0F172A;
-            --bg-secondary: #1E293B;
-            --surface: #1A202C;
-            --surface-hover: #2D3748;
-            --text-primary: #F1F5F9;
-            --text-secondary: #94A3B8;
-            --border: #334155;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --bg: #FAFAFA;
+            --surface: #FFFFFF;
+            --surface-secondary: #F9FAFB;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            --border: #E5E7EB;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
         body {
@@ -40,13 +42,15 @@
             top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--border);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .navbar-brand {
             font-size: 24px;
-            font-weight: 800;
-            color: var(--primary);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -62,14 +66,18 @@
         .nav-links a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
         }
 
-        .nav-links a:hover, .nav-links a.active {
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
             color: var(--primary);
         }
 
@@ -80,7 +88,8 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: var(--primary);
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 1px;
         }
 
         .sidebar {
@@ -102,27 +111,26 @@
             padding: 14px 24px;
             cursor: pointer;
             color: var(--text-secondary);
-            font-weight: 700;
+            font-weight: 600;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 12px;
             margin: 4px 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
         }
 
         .nav-menu-item:hover {
-            background: var(--surface-hover);
+            background: var(--surface-secondary);
             color: var(--primary);
             transform: translateX(4px);
         }
 
         .nav-menu-item.active {
-            background: rgba(16, 185, 129, 0.15);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
             color: var(--primary);
-            border-left: 3px solid var(--primary);
-            padding-left: 21px;
+            font-weight: 700;
         }
 
         .main {
@@ -144,9 +152,9 @@
         }
 
         .page-title {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 900;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--text-primary);
         }
 
@@ -166,11 +174,12 @@
         .stat-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 24px;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .stat-card::before {
@@ -179,14 +188,14 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
         }
 
         .stat-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-4px);
             border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), transparent);
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.12);
         }
 
         .stat-label {
@@ -194,23 +203,25 @@
             color: var(--text-secondary);
             text-transform: uppercase;
             margin-bottom: 12px;
-            font-weight: 800;
-            letter-spacing: 1px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .stat-value {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 900;
-            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 28px;
             margin-bottom: 24px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .card-header {
@@ -230,9 +241,9 @@
 
         .account-card {
             padding: 20px;
-            background: var(--bg-secondary);
+            background: var(--surface-secondary);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 14px;
             margin-bottom: 16px;
             transition: all 0.3s;
         }
@@ -240,6 +251,7 @@
         .account-card:hover {
             border-color: var(--primary);
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
         }
 
         .account-header {
@@ -250,8 +262,8 @@
         }
 
         .account-name {
-            font-size: 18px;
-            font-weight: 800;
+            font-size: 16px;
+            font-weight: 700;
         }
 
         .account-type {
@@ -262,10 +274,11 @@
             border-radius: 6px;
             display: inline-block;
             margin-top: 4px;
+            font-weight: 600;
         }
 
         .account-balance {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 900;
             color: var(--danger);
         }
@@ -286,20 +299,23 @@
             font-size: 11px;
             color: var(--text-secondary);
             text-transform: uppercase;
+            font-weight: 700;
         }
 
         .account-stat-value {
             font-size: 16px;
             font-weight: 800;
-            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .btn {
             padding: 12px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 14px;
             transition: all 0.3s ease;
             display: inline-flex;
@@ -308,21 +324,24 @@
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
         }
 
         .btn-secondary {
-            background: var(--surface-hover);
+            background: var(--surface-secondary);
             color: var(--text-primary);
             border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
         }
 
         .btn-danger {
@@ -347,18 +366,19 @@
             font-size: 13px;
             color: var(--text-primary);
             margin-bottom: 8px;
-            font-weight: 800;
+            font-weight: 700;
         }
 
         input, select, textarea {
             width: 100%;
             padding: 12px 16px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
             font-family: inherit;
-            background: var(--bg-secondary);
+            background: var(--surface-secondary);
             color: var(--text-primary);
+            transition: all 0.3s;
         }
 
         textarea {
@@ -369,7 +389,8 @@
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            background: var(--surface);
         }
 
         table {
@@ -385,6 +406,7 @@
             font-weight: 800;
             text-transform: uppercase;
             border-bottom: 2px solid var(--border);
+            background: var(--surface-secondary);
         }
 
         td {
@@ -403,7 +425,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -415,10 +437,10 @@
         .modal-content {
             background: var(--surface);
             padding: 32px;
-            border-radius: 16px;
+            border-radius: 20px;
             max-width: 500px;
             width: 90%;
-            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
             border: 1px solid var(--border);
             max-height: 90vh;
             overflow-y: auto;
@@ -441,7 +463,7 @@
         .progress-bar {
             width: 100%;
             height: 8px;
-            background: var(--bg-secondary);
+            background: var(--surface-secondary);
             border-radius: 4px;
             overflow: hidden;
             margin: 12px 0;
@@ -449,7 +471,7 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--primary), var(--accent));
         }
 
         .empty-state {
@@ -466,9 +488,9 @@
 
         .budget-card {
             padding: 20px;
-            background: var(--bg-secondary);
+            background: var(--surface-secondary);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 14px;
             margin-bottom: 16px;
         }
 
@@ -491,10 +513,16 @@
         }
 
         .payoff-item {
-            background: var(--bg-secondary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05));
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .payoff-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
         }
 
         .payoff-header {
@@ -511,7 +539,9 @@
 
         .payoff-date {
             font-size: 14px;
-            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             font-weight: 700;
         }
 
@@ -523,9 +553,10 @@
         }
 
         .payoff-stat {
-            background: rgba(16, 185, 129, 0.1);
+            background: var(--surface);
+            border: 1px solid var(--border);
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
         }
 
@@ -534,23 +565,27 @@
             font-size: 11px;
             text-transform: uppercase;
             margin-bottom: 4px;
+            font-weight: 700;
         }
 
         .payoff-stat-value {
-            color: var(--primary);
-            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
             font-size: 14px;
         }
 
         .recurring-badge {
             display: inline-block;
-            background: rgba(6, 182, 212, 0.2);
-            color: var(--secondary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.15));
+            color: var(--primary);
             padding: 4px 12px;
             border-radius: 6px;
             font-size: 11px;
             font-weight: 700;
             margin-left: 8px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
         }
 
         .actions-btns {
@@ -572,10 +607,7 @@
         <ul class="nav-links">
             <li><a onclick="switchPage('dashboard');" class="active">Dashboard</a></li>
             <li><a onclick="switchPage('debts');">Debts</a></li>
-            <li><a onclick="switchPage('payoff');">Payoff Timeline</a></li>
-            <li><a onclick="switchPage('savings');">Savings</a></li>
-            <li><a onclick="switchPage('expenses');">Expenses</a></li>
-            <li><a onclick="switchPage('income');">Income</a></li>
+            <li><a onclick="switchPage('payoff');">Payoff</a></li>
             <li><a onclick="switchPage('transactions');">Transactions</a></li>
             <li><a onclick="switchPage('budget');">Budget</a></li>
         </ul>
@@ -597,7 +629,7 @@
     <div class="main">
         <div id="dashboard" class="page active">
             <h1 class="page-title">Dashboard</h1>
-            <p class="page-subtitle">Your financial overview</p>
+            <p class="page-subtitle">Welcome back! Here's your financial snapshot</p>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-label">💳 Total Debt</div>
@@ -634,7 +666,7 @@
 
         <div id="payoff" class="page">
             <h1 class="page-title">⏱️ Debt Payoff Timeline</h1>
-            <p class="page-subtitle">See when you'll be debt-free</p>
+            <p class="page-subtitle">Your path to financial freedom</p>
             <div class="payoff-timeline" id="payoffTimeline"></div>
         </div>
 
@@ -645,20 +677,20 @@
         </div>
 
         <div id="expenses" class="page">
-            <h1 class="page-title">💸 Expense Accounts</h1>
+            <h1 class="page-title">💸 Expenses</h1>
             <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addExpenseModal')">➕ Add Account</button>
             <div id="expensesList"></div>
         </div>
 
         <div id="income" class="page">
-            <h1 class="page-title">💵 Income Accounts</h1>
+            <h1 class="page-title">💵 Income</h1>
             <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addIncomeModal')">➕ Add Account</button>
             <div id="incomeList"></div>
         </div>
 
         <div id="transactions" class="page">
             <h1 class="page-title">📝 Transactions</h1>
-            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addTransactionModal')">➕ Add</button>
+            <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addTransactionModal')">➕ Add Transaction</button>
             <div class="card">
                 <table>
                     <thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Account</th><th>Amount</th><th>Actions</th></tr></thead>
@@ -669,7 +701,7 @@
 
         <div id="budget" class="page">
             <h1 class="page-title">📊 Budget</h1>
-            <p class="page-subtitle">Manage your monthly budgets</p>
+            <p class="page-subtitle">Keep your spending on track</p>
             <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="openModal('addBudgetModal')">➕ Add Budget</button>
             <div id="budgetList"></div>
         </div>
@@ -686,7 +718,7 @@
                 <div class="form-group"><label>Monthly Payment (R)</label><input type="number" id="debtPayment" step="0.01" required></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('addDebtModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Add Debt</button>
                 </div>
             </form>
         </div>
@@ -702,7 +734,7 @@
                 <div class="form-group"><label>Interest (%)</label><input type="number" id="savingsRate" step="0.01" value="4.0"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('addSavingsModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Add Savings</button>
                 </div>
             </form>
         </div>
@@ -742,7 +774,7 @@
                 <div class="form-group"><label>Monthly Limit (R)</label><input type="number" id="budgetLimit" step="0.01" placeholder="0.00" required></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('addBudgetModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Add Budget</button>
                 </div>
             </form>
         </div>
@@ -754,15 +786,10 @@
             <form onsubmit="saveTransaction(event)">
                 <div class="form-group"><label>Date</label><input type="date" id="transDate" required></div>
                 <div class="form-group"><label>Description</label><input type="text" id="transDesc" required></div>
-                <div class="form-group"><label>Type</label><select id="transType" onchange="updateAccountSelect()" required><option value="">Select</option><option value="income">Income</option><option value="expense">Expense</option><option value="debt_payment">Debt Payment</option><option value="savings_deposit">Savings Deposit</option></select></div>
-                <div class="form-group"><label>Account</label><select id="transAccount" required><option value="">Select</option></select></div>
+                <div class="form-group"><label>Type</label><select id="transType" onchange="updateAccountSelect()" required><option value="">Select Type</option><option value="income">Income</option><option value="expense">Expense</option><option value="debt_payment">Debt Payment</option><option value="savings_deposit">Savings Deposit</option></select></div>
+                <div class="form-group"><label>Account</label><select id="transAccount" required><option value="">Select Account</option></select></div>
                 <div class="form-group"><label>Amount (R)</label><input type="number" id="transAmount" step="0.01" required></div>
-                <div class="form-group"><label>Notes (optional)</label><textarea id="transNotes" placeholder="Add any notes about this transaction..."></textarea></div>
-                <div style="display: none;" id="recurringSection">
-                    <div class="form-group">
-                        <label><input type="checkbox" id="isRecurring"> Make this recurring (monthly)</label>
-                    </div>
-                </div>
+                <div class="form-group"><label>Notes</label><textarea id="transNotes" placeholder="Add notes about this transaction..."></textarea></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeAddTransaction()">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="transSaveBtn">Add</button>
@@ -773,7 +800,6 @@
 
     <script>
         let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        let recurring = JSON.parse(localStorage.getItem('recurring')) || [];
         let debts = JSON.parse(localStorage.getItem('debts')) || [
             { id: 1, name: 'Tymebank Personal', balance: 20259, rate: 26.25, payment: 2200 },
             { id: 2, name: 'Nedbank Personal', balance: 51657, rate: 15.25, payment: 2246 },
@@ -794,6 +820,7 @@
             { id: 2, category: 'Transport', limit: 3000 },
             { id: 3, category: 'Utilities', limit: 4211 }
         ];
+        let recurring = JSON.parse(localStorage.getItem('recurring')) || [];
 
         let editingTransactionIndex = null;
 
@@ -813,13 +840,7 @@
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-        function closeAddTransaction() { 
-            editingTransactionIndex = null;
-            closeModal('addTransactionModal');
-            document.querySelector('#addTransactionModal form').reset();
-            document.getElementById('transDate').valueAsDate = new Date();
-        }
+        function closeAddTransaction() { editingTransactionIndex = null; closeModal('addTransactionModal'); document.querySelector('#addTransactionModal form').reset(); document.getElementById('transDate').valueAsDate = new Date(); }
 
         document.querySelectorAll('.modal').forEach(m => {
             m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('active'); });
@@ -828,27 +849,18 @@
         function updateAccountSelect() {
             const type = document.getElementById('transType').value;
             const sel = document.getElementById('transAccount');
-            sel.innerHTML = '<option value="">Select</option>';
+            sel.innerHTML = '<option value="">Select Account</option>';
             if (type === 'debt_payment') debts.forEach(d => sel.innerHTML += `<option value="debt_${d.id}">${d.name}</option>`);
             else if (type === 'savings_deposit') savingsAccounts.forEach(s => sel.innerHTML += `<option value="savings_${s.id}">${s.name}</option>`);
             else if (type === 'expense') expenseAccounts.forEach(e => sel.innerHTML += `<option value="expense_${e.id}">${e.name}</option>`);
             else if (type === 'income') incomeAccounts.forEach(i => sel.innerHTML += `<option value="income_${i.id}">${i.name}</option>`);
-            
-            // Show recurring option for income/expense only
-            const recurringSection = document.getElementById('recurringSection');
-            if (type === 'income' || type === 'expense') {
-                recurringSection.style.display = 'block';
-            } else {
-                recurringSection.style.display = 'none';
-                document.getElementById('isRecurring').checked = false;
-            }
         }
 
         function addDebt(e) { e.preventDefault(); debts.push({ id: Date.now(), name: document.getElementById('debtName').value, balance: parseFloat(document.getElementById('debtBalance').value), rate: parseFloat(document.getElementById('debtRate').value), payment: parseFloat(document.getElementById('debtPayment').value) }); localStorage.setItem('debts', JSON.stringify(debts)); closeModal('addDebtModal'); document.querySelector('#addDebtModal form').reset(); renderAll(); }
-        function deleteDebt(id) { if (confirm('Delete?')) { debts = debts.filter(d => d.id !== id); localStorage.setItem('debts', JSON.stringify(debts)); renderAll(); } }
+        function deleteDebt(id) { if (confirm('Delete this debt?')) { debts = debts.filter(d => d.id !== id); localStorage.setItem('debts', JSON.stringify(debts)); renderAll(); } }
 
         function addSavings(e) { e.preventDefault(); savingsAccounts.push({ id: Date.now(), name: document.getElementById('savingsName').value, balance: parseFloat(document.getElementById('savingsBalance').value), target: parseFloat(document.getElementById('savingsTarget').value), rate: parseFloat(document.getElementById('savingsRate').value) }); localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts)); closeModal('addSavingsModal'); document.querySelector('#addSavingsModal form').reset(); renderAll(); }
-        function deleteSavings(id) { if (confirm('Delete?')) { savingsAccounts = savingsAccounts.filter(s => s.id !== id); localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts)); renderAll(); } }
+        function deleteSavings(id) { if (confirm('Delete this account?')) { savingsAccounts = savingsAccounts.filter(s => s.id !== id); localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts)); renderAll(); } }
 
         function addExpense(e) { e.preventDefault(); expenseAccounts.push({ id: Date.now(), name: document.getElementById('expenseName').value }); localStorage.setItem('expenseAccounts', JSON.stringify(expenseAccounts)); closeModal('addExpenseModal'); document.querySelector('#addExpenseModal form').reset(); renderAll(); }
         function deleteExpense(id) { if (confirm('Delete?')) { expenseAccounts = expenseAccounts.filter(e => e.id !== id); localStorage.setItem('expenseAccounts', JSON.stringify(expenseAccounts)); renderAll(); } }
@@ -874,16 +886,14 @@
             openModal('addTransactionModal');
         }
 
-        function saveTransaction(e) { 
-            e.preventDefault(); 
-            const type = document.getElementById('transType').value; 
-            const acctId = document.getElementById('transAccount').value; 
-            const amt = parseFloat(document.getElementById('transAmount').value); 
-            const isRecurring = document.getElementById('isRecurring').checked;
-            
+        function saveTransaction(e) {
+            e.preventDefault();
+            const type = document.getElementById('transType').value;
+            const acctId = document.getElementById('transAccount').value;
+            const amt = parseFloat(document.getElementById('transAmount').value);
+
             if (editingTransactionIndex !== null) {
                 const oldTrans = transactions[editingTransactionIndex];
-                // Reverse old transaction
                 if (oldTrans.type === 'debt_payment') {
                     const did = parseInt(oldTrans.account.split('_')[1]);
                     const d = debts.find(x => x.id === did);
@@ -894,7 +904,6 @@
                     if (s) s.balance -= oldTrans.amount;
                 }
 
-                // Apply new transaction
                 transactions[editingTransactionIndex] = {
                     date: document.getElementById('transDate').value,
                     description: document.getElementById('transDesc').value,
@@ -914,7 +923,6 @@
                 });
             }
 
-            // Apply new impacts
             if (type === 'debt_payment') {
                 const did = parseInt(acctId.split('_')[1]);
                 const d = debts.find(x => x.id === did);
@@ -927,26 +935,14 @@
                 localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
             }
 
-            // Handle recurring
-            if (isRecurring && editingTransactionIndex === null) {
-                recurring.push({
-                    date: parseInt(document.getElementById('transDate').value.split('-')[2]),
-                    description: document.getElementById('transDesc').value,
-                    type: type,
-                    account: acctId,
-                    amount: amt
-                });
-                localStorage.setItem('recurring', JSON.stringify(recurring));
-            }
-
             localStorage.setItem('transactions', JSON.stringify(transactions));
             closeAddTransaction();
             renderAll();
             initChart();
         }
 
-        function deleteTransaction(i) { 
-            if (confirm('Delete?')) { 
+        function deleteTransaction(i) {
+            if (confirm('Delete this transaction?')) {
                 const trans = transactions[i];
                 if (trans.type === 'debt_payment') {
                     const did = parseInt(trans.account.split('_')[1]);
@@ -959,17 +955,17 @@
                     if (s) s.balance -= trans.amount;
                     localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
                 }
-                transactions.splice(i, 1); 
-                localStorage.setItem('transactions', JSON.stringify(transactions)); 
-                renderAll(); 
-                initChart(); 
-            } 
+                transactions.splice(i, 1);
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+                renderAll();
+                initChart();
+            }
         }
 
         function applyRecurringTransactions() {
             const today = new Date();
             recurring.forEach(rec => {
-                const exists = transactions.some(t => 
+                const exists = transactions.some(t =>
                     t.date.endsWith('-' + String(rec.date).padStart(2, '0')) &&
                     t.description === rec.description &&
                     t.type === rec.type &&
@@ -985,7 +981,6 @@
                         amount: rec.amount,
                         notes: '(Recurring)'
                     });
-                    // Apply impacts
                     if (rec.type === 'debt_payment') {
                         const did = parseInt(rec.account.split('_')[1]);
                         const d = debts.find(x => x.id === did);
@@ -1020,48 +1015,28 @@
             document.getElementById('thisMonthSpent').textContent = 'R' + spent.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
 
             const recent = transactions.slice(-5).reverse();
-            document.getElementById('recentTransactions').innerHTML = recent.length === 0 ? '<div class="empty-state">No transactions</div>' : `<table><tbody>${recent.map(t => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}${t.notes ? ' <span class="recurring-badge">' + t.notes + '</span>' : ''}</td><td>${t.type}</td><td>${getAccountName(t.type, t.account)}</td><td class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</td></tr>`).join('')}</tbody></table>`;
+            document.getElementById('recentTransactions').innerHTML = recent.length === 0 ? '<div class="empty-state">No transactions yet</div>' : `<table><tbody>${recent.map(t => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}${t.notes ? ' <span class="recurring-badge">' + t.notes + '</span>' : ''}</td><td>${t.type}</td><td>${getAccountName(t.type, t.account)}</td><td class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</td></tr>`).join('')}</tbody></table>`;
 
-            document.getElementById('debtsList').innerHTML = debts.map(d => { const m = Math.max(1, Math.ceil(d.balance / d.payment)); return `<div class="account-card"><div class="account-header"><div><div class="account-name">${d.name}</div><div class="account-type">${d.rate}% APR</div></div><div class="account-balance">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div class="account-info"><div><div class="account-stat-label">Payment</div><div class="account-stat-value">R${d.payment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div><div class="account-stat-label">Months</div><div class="account-stat-value">${m}</div></div></div><button class="btn btn-danger" onclick="deleteDebt(${d.id})" style="margin-top: 16px; width: 100%;">Delete</button></div>`; }).join('') || '<div class="empty-state">No debts</div>';
+            document.getElementById('debtsList').innerHTML = debts.map(d => { const m = Math.max(1, Math.ceil(d.balance / d.payment)); return `<div class="account-card"><div class="account-header"><div><div class="account-name">${d.name}</div><div class="account-type">${d.rate}% APR</div></div><div class="account-balance">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div class="account-info"><div><div class="account-stat-label">Payment</div><div class="account-stat-value">R${d.payment.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div><div class="account-stat-label">Months</div><div class="account-stat-value">${m}</div></div></div><div style="display: flex; gap: 8px; margin-top: 16px;"><button class="btn btn-sm btn-danger" onclick="deleteDebt(${d.id})" style="flex: 1;">Delete</button></div></div>`; }).join('') || '<div class="empty-state">No debts added yet</div>';
 
-            // Payoff Timeline
             const payoffHTML = debts.map(d => {
                 const monthsToPayoff = Math.ceil(d.balance / d.payment);
                 const payoffDate = new Date();
                 payoffDate.setMonth(payoffDate.getMonth() + monthsToPayoff);
                 const totalInterest = (d.payment * monthsToPayoff) - d.balance;
-                return `<div class="payoff-item">
-                    <div class="payoff-header">
-                        <div class="payoff-name">${d.name}</div>
-                        <div class="payoff-date">${payoffDate.toLocaleDateString('en-ZA', { year: 'numeric', month: 'short' })}</div>
-                    </div>
-                    <div class="payoff-status">
-                        <div class="payoff-stat">
-                            <div class="payoff-stat-label">Balance</div>
-                            <div class="payoff-stat-value">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
-                        </div>
-                        <div class="payoff-stat">
-                            <div class="payoff-stat-label">Months Left</div>
-                            <div class="payoff-stat-value">${monthsToPayoff}</div>
-                        </div>
-                        <div class="payoff-stat">
-                            <div class="payoff-stat-label">Interest (Est)</div>
-                            <div class="payoff-stat-value">R${totalInterest.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div>
-                        </div>
-                    </div>
-                </div>`;
+                return `<div class="payoff-item"><div class="payoff-header"><div class="payoff-name">${d.name}</div><div class="payoff-date">${payoffDate.toLocaleDateString('en-ZA', { year: 'numeric', month: 'short' })}</div></div><div class="payoff-status"><div class="payoff-stat"><div class="payoff-stat-label">Balance</div><div class="payoff-stat-value">R${d.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div class="payoff-stat"><div class="payoff-stat-label">Months Left</div><div class="payoff-stat-value">${monthsToPayoff}</div></div><div class="payoff-stat"><div class="payoff-stat-label">Interest (Est)</div><div class="payoff-stat-value">R${totalInterest.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div></div></div>`;
             }).join('');
             document.getElementById('payoffTimeline').innerHTML = payoffHTML || '<div class="empty-state">No debts to track</div>';
 
-            document.getElementById('savingsList').innerHTML = savingsAccounts.map(s => { const p = (s.balance / s.target) * 100; return `<div class="account-card"><div class="account-header"><div><div class="account-name">${s.name}</div><div class="account-type">${s.rate}% APR</div></div><div class="account-balance positive">R${s.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div class="account-info"><div><div class="account-stat-label">Target</div><div class="account-stat-value">R${s.target.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div><div class="account-stat-label">Progress</div><div class="account-stat-value">${p.toFixed(0)}%</div></div></div><div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(p, 100)}%;"></div></div><button class="btn btn-danger" onclick="deleteSavings(${s.id})" style="margin-top: 16px; width: 100%;">Delete</button></div>`; }).join('') || '<div class="empty-state">No savings</div>';
+            document.getElementById('savingsList').innerHTML = savingsAccounts.map(s => { const p = (s.balance / s.target) * 100; return `<div class="account-card"><div class="account-header"><div><div class="account-name">${s.name}</div><div class="account-type">${s.rate}% APR</div></div><div class="account-balance positive">R${s.balance.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div class="account-info"><div><div class="account-stat-label">Target</div><div class="account-stat-value">R${s.target.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><div><div class="account-stat-label">Progress</div><div class="account-stat-value">${p.toFixed(0)}%</div></div></div><div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(p, 100)}%;"></div></div><div style="display: flex; gap: 8px; margin-top: 16px;"><button class="btn btn-sm btn-danger" onclick="deleteSavings(${s.id})" style="flex: 1;">Delete</button></div></div>`; }).join('') || '<div class="empty-state">No savings accounts</div>';
 
-            document.getElementById('expensesList').innerHTML = expenseAccounts.map(e => `<div class="account-card"><div class="account-header"><div class="account-name">${e.name}</div></div><button class="btn btn-danger" onclick="deleteExpense(${e.id})" style="width: 100%;">Delete</button></div>`).join('') || '<div class="empty-state">No accounts</div>';
+            document.getElementById('expensesList').innerHTML = expenseAccounts.map(e => `<div class="account-card"><div class="account-header"><div class="account-name">${e.name}</div></div><div style="display: flex; gap: 8px; margin-top: 12px;"><button class="btn btn-sm btn-danger" onclick="deleteExpense(${e.id})" style="flex: 1;">Delete</button></div></div>`).join('') || '<div class="empty-state">No expense accounts</div>';
 
-            document.getElementById('incomeList').innerHTML = incomeAccounts.map(i => `<div class="account-card"><div class="account-header"><div class="account-name">${i.name}</div></div><button class="btn btn-danger" onclick="deleteIncome(${i.id})" style="width: 100%;">Delete</button></div>`).join('') || '<div class="empty-state">No accounts</div>';
+            document.getElementById('incomeList').innerHTML = incomeAccounts.map(i => `<div class="account-card"><div class="account-header"><div class="account-name">${i.name}</div></div><div style="display: flex; gap: 8px; margin-top: 12px;"><button class="btn btn-sm btn-danger" onclick="deleteIncome(${i.id})" style="flex: 1;">Delete</button></div></div>`).join('') || '<div class="empty-state">No income accounts</div>';
 
             document.getElementById('transactionsList').innerHTML = transactions.length === 0 ? '<tr><td colspan="6"><div class="empty-state">No transactions</div></td></tr>' : transactions.map((t, i) => `<tr><td>${new Date(t.date).toLocaleDateString()}</td><td>${t.description}${t.notes ? ' <span class="recurring-badge">' + t.notes + '</span>' : ''}</td><td>${t.type}</td><td>${getAccountName(t.type, t.account)}</td><td class="amount ${t.type === 'income' ? 'positive' : 'negative'}">R${Math.abs(t.amount).toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</td><td><button class="btn btn-sm btn-secondary" onclick="openTransactionModal(${i})">Edit</button> <button class="btn btn-sm btn-danger" onclick="deleteTransaction(${i})">Delete</button></td></tr>`).join('');
 
-            document.getElementById('budgetList').innerHTML = budgets.map(b => { const spent = Math.abs(tmt.filter(t => { const desc = t.description.toLowerCase(); return t.type === 'expense' && desc.includes(b.category.toLowerCase()); }).reduce((s, t) => s + t.amount, 0)); const pct = (spent / b.limit) * 100; return `<div class="budget-card"><div class="budget-header"><div><div class="budget-category">${b.category}</div><div class="budget-limit">Limit: R${b.limit.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><button class="btn btn-danger" onclick="deleteBudget(${b.id})">Delete</button></div><div style="margin-bottom: 12px;"><div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span>Spent</span><span class="amount ${spent > b.limit ? 'negative' : 'positive'}">R${spent.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(pct, 100)}%; background: linear-gradient(90deg, ${pct > 100 ? '#EF4444' : '#10B981'}, ${pct > 100 ? '#DC2626' : '#06B6D4'});"></div></div><div style="font-size: 12px; color: var(--text-secondary);">${pct.toFixed(0)}% used</div></div></div>`; }).join('') || '<div class="empty-state">No budgets</div>';
+            document.getElementById('budgetList').innerHTML = budgets.map(b => { const spent = Math.abs(tmt.filter(t => { const desc = t.description.toLowerCase(); return t.type === 'expense' && desc.includes(b.category.toLowerCase()); }).reduce((s, t) => s + t.amount, 0)); const pct = (spent / b.limit) * 100; return `<div class="budget-card"><div class="budget-header"><div><div class="budget-category">${b.category}</div><div style="font-size: 14px; color: var(--text-secondary);">Limit: R${b.limit.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</div></div><button class="btn btn-sm btn-danger" onclick="deleteBudget(${b.id})">Delete</button></div><div style="margin-bottom: 12px;"><div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;"><span>Spent</span><span class="amount ${spent > b.limit ? 'negative' : 'positive'}">R${spent.toLocaleString('en-ZA', { maximumFractionDigits: 0 })}</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(pct, 100)}%; background: linear-gradient(90deg, ${pct > 100 ? '#EF4444' : '#6366F1'}, ${pct > 100 ? '#DC2626' : '#EC4899'});"></div></div><div style="font-size: 12px; color: var(--text-secondary);">${pct.toFixed(0)}% used</div></div></div>`; }).join('') || '<div class="empty-state">No budgets yet</div>';
         }
 
         function initChart() {
@@ -1071,7 +1046,28 @@
             const exp = transactions.filter(t => { const td = new Date(t.date); return td.getMonth() === tm.getMonth() && t.type === 'expense'; }).reduce((s, t) => s + Math.abs(t.amount), 0);
             const inc = transactions.filter(t => { const td = new Date(t.date); return td.getMonth() === tm.getMonth() && t.type === 'income'; }).reduce((s, t) => s + t.amount, 0);
             if (window.dashboardChart) window.dashboardChart.destroy();
-            window.dashboardChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['Expenses', 'Income'], datasets: [{ data: [Math.abs(exp) || 1, inc || 1], backgroundColor: ['#EF4444', '#10B981'], borderColor: '#1A202C', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8', font: { weight: 700, size: 13 }, padding: 20 } } } } });
+            window.dashboardChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Expenses', 'Income'],
+                    datasets: [{
+                        data: [Math.abs(exp) || 1, inc || 1],
+                        backgroundColor: ['#EF4444', '#10B981'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#6B7280', font: { weight: 600, size: 13 }, padding: 20 }
+                        }
+                    }
+                }
+            });
         }
     </script>
 </body>
